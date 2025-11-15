@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>JavaScript Cheat Sheet</title>
+  <link rel="icon" type="image/png" href="logo2.png">
+
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-card: #020617;
+      --bg-soft: #0b1120;
+      --accent-pink: #f472b6;
+      --accent-blue: #38bdf8;
+      --accent-green: #4ade80;
+      --accent-yellow: #eab308;
+      --accent-purple: #a855f7;
+      --accent-red: #fb7185;
+      --accent-orange: #fb923c;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --code-bg: #020617;
+      --border-soft: rgba(148, 163, 184, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* ===== MENU 5 FILE – KHÔNG CÓ KHUNG NỀN ===== */
+    .top-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      backdrop-filter: none;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+
+    .top-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      font-size: 0.86rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition:
+        background 0.15s,
+        color 0.15s,
+        border-color 0.15s,
+        transform 0.1s,
+        box-shadow 0.15s;
+    }
+
+    .top-tab-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-blue);
+    }
+
+    .top-tab-btn:hover {
+      color: #e5e7eb;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .top-tab-btn.active {
+      color: #0b1120;
+      border-color: var(--accent-blue);
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .top-tab-btn.active .top-tab-dot {
+      background: #0b1120;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.7;
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px 40px;
+      background: radial-gradient(circle at top left, #1e293b 0, #020617 60%);
+      color: var(--text-main);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #f9fafb;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-soft);
+      margin-bottom: 10px;
+      font-size: 0.96rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(236, 72, 153, 0.18));
+      margin-bottom: 10px;
+    }
+
+    .badge span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent-green);
+    }
+
+    .section {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.9);
+    }
+
+    .section.important-high {
+      border-left: 3px solid var(--accent-pink);
+    }
+
+    .section.important-mid {
+      border-left: 3px solid var(--accent-blue);
+    }
+
+    .section.important-low {
+      border-left: 3px solid rgba(148, 163, 184, 0.8);
+    }
+
+    .sec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .sec-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .pill {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #020617;
+    }
+
+    .pill.basic {
+      background: var(--accent-blue);
+    }
+
+    .pill.var {
+      background: var(--accent-orange);
+    }
+
+    .pill.type {
+      background: var(--accent-green);
+    }
+
+    .pill.op {
+      background: var(--accent-yellow);
+    }
+
+    .pill.if {
+      background: var(--accent-pink);
+    }
+
+    .pill.loop {
+      background: #22d3ee;
+    }
+
+    .pill.func {
+      background: #a855f7;
+    }
+
+    .pill.arr {
+      background: #4ade80;
+    }
+
+    .pill.obj {
+      background: #fb923c;
+    }
+
+    .pill.dom {
+      background: #38bdf8;
+    }
+
+    .pill.event {
+      background: #facc15;
+    }
+
+    .pill.store {
+      background: #22c55e;
+    }
+
+    .pill.async {
+      background: #fb7185;
+    }
+
+    .pill.error {
+      background: #f97316;
+    }
+
+    .pill.es {
+      background: #2dd4bf;
+    }
+
+    .pill.this {
+      background: #818cf8;
+    }
+
+    .pill.closure {
+      background: #f97316;
+    }
+
+    .pill.class {
+      background: #22c55e;
+    }
+
+    .pill.mod {
+      background: #f59e0b;
+    }
+
+    .pill.mapset {
+      background: #0ea5e9;
+    }
+
+    .pill.date {
+      background: #a855f7;
+    }
+
+    .pill.regex {
+      background: #fb7185;
+    }
+
+    .pill.util {
+      background: #facc15;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .tag-js {
+      border-color: rgba(248, 250, 252, 0.7);
+      color: #e5e7eb;
+    }
+
+    .tag-hot {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+      background: rgba(248, 113, 113, 0.08);
+    }
+
+    .freq {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .freq.high {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+      background: rgba(127, 29, 29, 0.4);
+    }
+
+    .freq.mid {
+      border-color: rgba(59, 130, 246, 0.9);
+      color: #bfdbfe;
+      background: rgba(30, 64, 175, 0.45);
+    }
+
+    .freq.low {
+      border-color: rgba(234, 179, 8, 0.9);
+      color: #fef9c3;
+      background: rgba(113, 63, 18, 0.45);
+    }
+
+    p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+
+    ul,
+    ol {
+      margin: 6px 0 8px 18px;
+      font-size: 0.94rem;
+    }
+
+    li+li {
+      margin-top: 3px;
+    }
+
+    code {
+      background-color: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.86rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      overflow-x: auto;
+      font-size: 0.86rem;
+      margin: 8px 0;
+    }
+
+    pre code {
+      border: none;
+      padding: 0;
+      background: transparent;
+    }
+
+    .sub-title {
+      font-weight: 600;
+      color: var(--accent-blue);
+      margin-top: 4px;
+      margin-bottom: 4px;
+      font-size: 0.94rem;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background-color: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      margin-right: 6px;
+      margin-top: 4px;
+    }
+
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-blue);
+    }
+
+    .chip.green .chip-dot {
+      background: var(--accent-green);
+    }
+
+    .chip.pink .chip-dot {
+      background: var(--accent-pink);
+    }
+
+    .chip.yellow .chip-dot {
+      background: var(--accent-yellow);
+    }
+
+    .chip.red .chip-dot {
+      background: var(--accent-red);
+    }
+
+    .important {
+      border-left: 3px solid var(--accent-yellow);
+      padding-left: 10px;
+      margin-top: 8px;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .hot-alert {
+      border-left: 3px solid rgba(248, 113, 113, 0.95);
+      background: rgba(248, 113, 113, 0.06);
+      padding: 6px 10px;
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 0.88rem;
+      color: #fecaca;
+    }
+
+    /* example-block */
+
+    .example-block {
+      margin-top: 8px;
+      margin-bottom: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      padding: 10px 10px 8px;
+    }
+
+    .example-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .example-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .example-col-label {
+      font-size: 0.8rem;
+      color: var(--accent-blue);
+      margin-bottom: 2px;
+    }
+
+    .example-output {
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.84rem;
+      white-space: pre-wrap;
+    }
+
+    .example-output-label {
+      font-size: 0.78rem;
+      color: var(--accent-green);
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0 12px 28px;
+      }
+    }
+
+    /* ===== Khung tìm kiếm dùng chung ===== */
+
+    .search-wrapper {
+      position: sticky;
+      top: 50px;
+      z-index: 40;
+      max-width: 680px;
+      margin: 12px auto 18px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: linear-gradient(135deg,
+          rgba(15, 23, 42, 0.95),
+          rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.85);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      padding: 6px 8px 6px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    .search-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent-blue);
+    }
+
+    .search-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      padding: 4px 8px;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-soft);
+      opacity: 0.8;
+    }
+
+    .search-btn {
+      flex-shrink: 0;
+      border: none;
+      outline: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: linear-gradient(135deg,
+          var(--accent-blue),
+          var(--accent-pink));
+      color: #0b1120;
+      box-shadow: 0 6px 16px rgba(56, 189, 248, 0.45);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 9px 22px rgba(56, 189, 248, 0.55);
+      filter: brightness(1.05);
+    }
+
+    .search-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.8);
+    }
+
+    .search-hint {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    .search-results {
+      margin-top: 6px;
+      padding: 4px 0;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      list-style: none;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .search-results:empty {
+      display: none;
+    }
+
+    .search-result-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+
+    .search-result-item:hover,
+    .search-result-item.is-active {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .search-result-icon {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--text-soft);
+      font-size: 0.65rem;
+    }
+
+    .search-result-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-result-title {
+      color: var(--text-main);
+      font-weight: 500;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .search-result-snippet {
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .search-result-empty {
+      padding: 6px 10px;
+      font-size: 0.86rem;
+      color: var(--text-soft);
+    }
+
+    .search-hit {
+      outline: 2px solid var(--accent-blue);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4);
+      border-radius: 10px;
+      animation: searchBlink 1s ease-out 0s 1;
+    }
+
+    @keyframes searchBlink {
+      0% {
+        background-color: rgba(56, 189, 248, 0.22);
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    .author-links {
+      margin-bottom: 26px;
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .author-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-main);
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .author-item:hover {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .github-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--accent-blue);
+    }
+
+    .money-icon {
+      width: 20px;
+      height: 20px;
+      color: #0b1120;
+    }
+
+    .donate-box {
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+      color: #0b1120;
+      border-color: transparent;
+      box-shadow: 0 0 20px rgba(244, 114, 182, 0.35);
+    }
+
+    .subtitle a {
+      color: var(--text-main);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .subtitle a:hover {
+      color: var(--accent-blue);
+      text-decoration: underline;
+    }
+
+    /* ===== FILTER ĐỘ QUAN TRỌNG ===== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 18px;
+    }
+
+    .filter-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s;
+    }
+
+    .filter-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.9);
+    }
+
+    .filter-btn[data-level="high"] .filter-dot {
+      background: var(--accent-red);
+    }
+
+    .filter-btn[data-level="mid"] .filter-dot {
+      background: var(--accent-blue);
+    }
+
+    .filter-btn[data-level="low"] .filter-dot {
+      background: var(--accent-yellow);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
+      color: #0b1120;
+      border-color: transparent;
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.35);
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>JAVASCRIPT Cheat Sheet</h1>
+  <p class="subtitle">
+    Tham khảo <a href="https://htmlcheatsheet.com/js/"><i>Nguồn</i></a>
+  </p>
+  <p class="subtitle">- Ikigai, Kaizen, Shu-Ha-Ri -</p>
+
+  <div class="author-links">
+    <a href="https://github.com/VietNgocAmbition" target="_blank" class="author-item">
+      <svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path
+          d="M9 19c-4.3 1-4.3-2.5-6-3m12 5v-3.5c0-.9.1-1.3-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.3 1.2a11.3 11.3 0 0 0-6 0C7 2.8 6 3 6 3a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.6 9.4c0 4.5 2.7 5.7 5.5 6-.3.4-.6 1.1-.7 2V21" />
+      </svg>
+      <span>GitHub: VietNgocAmbition</span>
+    </a>
+
+    <div class="author-item donate-box">
+      <svg class="money-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+        <circle cx="12" cy="12" r="3"></circle>
+        <path
+          d="M2 10c2 0 3-2 3-2m17 2c-2 0-3-2-3-2m-14 6c2 0 3 2 3 2m14-2c-2 0-3 2-3 2">
+        </path>
+      </svg>
+      <span>Donate: TPBank - 26304032004</span>
+    </div>
+  </div>
+
+  <nav class="top-tabs">
+    <a href="Html.html" class="top-tab-btn" id="tab-html">
+      <span class="top-tab-dot"></span>
+      HTML
+    </a>
+    <a href="Css.html" class="top-tab-btn" id="tab-css">
+      <span class="top-tab-dot"></span>
+      CSS
+    </a>
+    <a href="Jquery.html" class="top-tab-btn" id="tab-jquery">
+      <span class="top-tab-dot"></span>
+      Jquery
+    </a>
+    <a href="Js.html" class="top-tab-btn" id="tab-js">
+      <span class="top-tab-dot"></span>
+      JavaScript
+    </a>
+    <a href="ReacjsTailwind.html" class="top-tab-btn" id="tab-react">
+      <span class="top-tab-dot"></span>
+      ReactJS & Tailwind & Redux Toolkit
+    </a>
+    <a href="NodeJs.html" class="top-tab-btn" id="tab-node">
+      <span class="top-tab-dot"></span>
+      NodeJS
+    </a>
+    <a href="#" class="top-tab-btn" id="tab-ts">
+      <span class="top-tab-dot"></span>
+      Typescript ( Đang học)
+    </a>
+  </nav>
+
+  <!-- Khung tìm kiếm + dropdown kết quả -->
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <span class="search-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M10.5 4a6.5 6.5 0 0 1 5.11 10.57l3.91 3.91a1 1 0 0 1-1.42 1.42l-3.91-3.91A6.5 6.5 0 1 1 10.5 4zm0 2a4.5 4.5 0 1 0 0 9a4.5 4.5 0 0 0 0-9z" />
+        </svg>
+      </span>
+      <input type="text" class="search-input" placeholder="Tìm nhanh: let, array, map, DOM, fetch, async...">
+      <button class="search-btn" type="button">
+        Tìm kiếm
+      </button>
+    </div>
+    <p class="search-hint">
+      Gõ từ khóa rồi nhấn <strong>Enter</strong> hoặc nút <strong>Tìm kiếm</strong>
+    </p>
+    <ul class="search-results"></ul>
+  </div>
+
+  <div class="badge"><span></span> JavaScript</div>
+
+  <!-- BỘ LỌC ĐỘ QUAN TRỌNG -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-level="all">
+      <span class="filter-dot"></span>
+      Tất cả
+    </button>
+    <button class="filter-btn" data-level="high">
+      <span class="filter-dot"></span>
+      Rất quan trọng
+    </button>
+    <button class="filter-btn" data-level="mid">
+      <span class="filter-dot"></span>
+      Trung bình
+    </button>
+    <button class="filter-btn" data-level="low">
+      <span class="filter-dot"></span>
+      Ít gặp
+    </button>
+  </div>
+
+  <!-- 1. Giới thiệu & cách chạy JS -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill basic">JS</div>
+        <h2>1. Giới thiệu &amp; cách nhúng / chạy JavaScript</h2>
+        <span class="freq mid">CƠ BẢN</span>
+      </div>
+      <span class="tag tag-js">Basic Setup</span>
+    </div>
+
+    <p>JavaScript là ngôn ngữ lập trình chạy trên trình duyệt (và Node.js) để thao tác DOM, call API, xử lý logic...</p>
+
+    <p class="sub-title">1.1 Nhúng file JS ngoài</p>
+    <div class="example-block">
+      <div class="example-title">Cú pháp + Ví dụ</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML nối file JS:</div>
+          <pre><code>&lt;!-- index.html --&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello JS&lt;/h1&gt;
+  &lt;script src="app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">Nội dung file app.js:</div>
+          <pre><code>// app.js
+console.log("Xin chào từ JS");</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            Console:
+            Xin chào từ JS
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">1.2 Viết JS trực tiếp trong HTML</p>
+    <div class="example-block">
+      <div class="example-title">Inline script</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>&lt;script&gt;
+  alert("Hello từ inline JS");
+&lt;/script&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            Popup xuất hiện: "Hello từ inline JS"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">💡 Thực tế dự án: gần như luôn dùng <code>&lt;script src="app.js"&gt;</code> hoặc bundler (Vite,
+      Webpack...).</p>
+  </section>
+
+  <!-- 2. Biến (var, let, const) -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill var">V</div>
+        <h2>2. Biến (var, let, const)</h2>
+        <span class="freq high">RẤT QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Dùng suốt</span>
+    </div>
+
+    <p><code>let</code>, <code>const</code> là chuẩn ES6 → dùng trong tất cả dự án hiện đại.</p>
+
+    <ul>
+      <li><code>let</code> : biến có thể gán lại, phạm vi block.</li>
+      <li><code>const</code> : không gán lại (đối tượng vẫn mutate được), phạm vi block.</li>
+      <li><code>var</code> : cũ, phạm vi function, dễ lỗi hoisting → hạn chế dùng.</li>
+    </ul>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ var / let / const</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">Code:</div>
+          <pre><code>var x = 10;
+let y = 20;
+const PI = 3.14;
+
+x = 15; // OK
+y = 25; // OK
+// PI = 3.2; // ❌ Lỗi: gán lại const
+
+console.log(x, y, PI);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            Console:
+            15 25 3.14
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Thực tế: luôn ưu tiên <code>const</code>, chỉ dùng <code>let</code> khi cần gán lại. Rất ít khi cần
+      <code>var</code>.
+    </div>
+  </section>
+
+  <!-- 3. Kiểu dữ liệu & typeof -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill type">T</div>
+        <h2>3. Kiểu dữ liệu &amp; typeof</h2>
+        <span class="freq high">CƠ BẢN • QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-js">Types</span>
+    </div>
+
+    <p>Các kiểu cơ bản hay gặp:</p>
+    <ul>
+      <li><strong>Primitive</strong>: <code>string</code>, <code>number</code>, <code>boolean</code>,
+        <code>null</code>, <code>undefined</code>, <code>bigint</code>, <code>symbol</code>.
+      </li>
+      <li><strong>Non-primitive</strong>: <code>object</code> (array, function, object...).</li>
+    </ul>
+
+    <div class="example-block">
+      <div class="example-title">typeof các kiểu dữ liệu</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>let name = "Ngọc";
+let age = 21;
+let isStudent = true;
+let nothing = null;
+let notDefined;
+
+console.log(typeof name);
+console.log(typeof age);
+console.log(typeof isStudent);
+console.log(typeof nothing);
+console.log(typeof notDefined);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "string"
+            "number"
+            "boolean"
+            "object" // null là bug lịch sử
+            "undefined"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">🧠 Quan trọng: <code>typeof null</code> trả về "object" là lỗi cũ, nhưng không sửa để tránh phá
+      backward-compatible.</p>
+  </section>
+
+  <!-- 4. Toán tử -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill op">Op</div>
+        <h2>4. Toán tử (operators)</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">Operators</span>
+    </div>
+
+    <ul>
+      <li>Số học: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>**</code></li>
+      <li>So sánh: <code>===</code>, <code>!==</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>,
+        <code>&lt;=</code>
+      </li>
+      <li>Logic: <code>&amp;&amp;</code>, <code>||</code>, <code>!</code></li>
+      <li>Gán: <code>=</code>, <code>+=</code>, <code>-=</code>...</li>
+      <li>Toán tử 3 ngôi: <code>condition ? a : b</code></li>
+    </ul>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ toán tử</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>let a = 10;
+let b = 3;
+
+console.log(a + b);   // 13
+console.log(a % b);   // 1
+console.log(a > b);   // true
+
+let ok = (a > 5) && (b &lt; 5);
+console.log(ok);
+
+let msg = a > 5 ? "Lớn hơn 5" : "Không";
+console.log(msg);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            13
+            1
+            true
+            true
+            "Lớn hơn 5"
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Câu điều kiện -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill if">IF</div>
+        <h2>5. Câu điều kiện: if...else, switch</h2>
+        <span class="freq high">RẤT HAY GẶP</span>
+      </div>
+      <span class="tag tag-js">Conditions</span>
+    </div>
+
+    <p class="sub-title">5.1 if / else if / else</p>
+    <div class="example-block">
+      <div class="example-title">Ví dụ phân loại điểm</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>let score = 8.5;
+let grade;
+
+if (score >= 9) {
+  grade = "Xuất sắc";
+} else if (score >= 7) {
+  grade = "Khá";
+} else if (score >= 5) {
+  grade = "Trung bình";
+} else {
+  grade = "Yếu";
+}
+
+console.log(grade);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "Khá"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">5.2 switch</p>
+    <div class="example-block">
+      <div class="example-title">Ví dụ switch</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>let role = "admin";
+
+switch (role) {
+  case "admin":
+    console.log("Quyền quản trị");
+    break;
+  case "editor":
+    console.log("Quyền chỉnh sửa");
+    break;
+  default:
+    console.log("Quyền xem");
+}</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "Quyền quản trị"
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Vòng lặp -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill loop">Lp</div>
+        <h2>6. Vòng lặp: for, while, for...of, for...in</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">Loops</span>
+    </div>
+
+    <p class="sub-title">6.1 for cơ bản</p>
+    <div class="example-block">
+      <div class="example-title">Lặp 1 → 5</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>for (let i = 1; i &lt;= 5; i++) {
+  console.log("i =", i);
+}</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            i = 1
+            i = 2
+            i = 3
+            i = 4
+            i = 5
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">6.2 for...of (dùng cho array, string)</p>
+    <div class="example-block">
+      <div class="example-title">Lặp qua array</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const langs = ["HTML", "CSS", "JS"];
+
+for (const lang of langs) {
+  console.log(lang);
+}</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "HTML"
+            "CSS"
+            "JS"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">6.3 for...in (dùng cho object)</p>
+    <div class="example-block">
+      <div class="example-title">Lặp qua key của object</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const user = {
+  name: "Ngọc",
+  age: 21,
+  city: "Đà Nẵng"
+};
+
+for (const key in user) {
+  console.log(key, "=", user[key]);
+}</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "name" = "Ngọc"
+            "age" = 21
+            "city" = "Đà Nẵng"
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Hàm (function, arrow) -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill func">ƒ</div>
+        <h2>7. Hàm: function, arrow function</h2>
+        <span class="freq high">RẤT QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Dùng suốt</span>
+    </div>
+
+    <p class="sub-title">7.1 function declaration</p>
+    <div class="example-block">
+      <div class="example-title">Ví dụ cộng 2 số</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>function sum(a, b) {
+  return a + b;
+}
+
+console.log(sum(3, 5));</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            8
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">7.2 Arrow function (ES6) 🔥</p>
+    <div class="example-block">
+      <div class="example-title">Arrow function rút gọn</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const double = (x) => x * 2;
+
+console.log(double(10));</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            20
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Trong React, callback, xử lý array,... arrow function dùng cực nhiều. Nhìn thấy <code>() =&gt; { }</code> là
+      hiểu ngay.
+    </div>
+  </section>
+
+  <!-- 8. Chuỗi (string methods) -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill type">St</div>
+        <h2>8. Chuỗi (string) &amp; template literals</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">String APIs</span>
+    </div>
+
+    <p>Các method hay gặp: <code>length</code>, <code>toUpperCase()</code>, <code>toLowerCase()</code>,
+      <code>includes()</code>, <code>slice()</code>, <code>trim()</code>...</p>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ xử lý chuỗi</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const name = "   le viet ngoc   ";
+
+console.log(name.trim());
+console.log(name.trim().toUpperCase());
+console.log(name.includes("ngoc"));
+
+const msg = `Xin chào, ${name.trim()}!`;
+console.log(msg);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "le viet ngoc"
+            "LE VIET NGOC"
+            true
+            "Xin chào, le viet ngoc!"
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Array (map, filter, reduce...) -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill arr">Ar</div>
+        <h2>9. Mảng (Array) – map, filter, reduce...</h2>
+        <span class="freq high">CỰC KỲ QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Dùng cực nhiều</span>
+    </div>
+
+    <p>Các method hay gặp trong dự án lớn:</p>
+    <div class="chip pink"><span class="chip-dot"></span>map</div>
+    <div class="chip green"><span class="chip-dot"></span>filter</div>
+    <div class="chip yellow"><span class="chip-dot"></span>reduce</div>
+    <div class="chip red"><span class="chip-dot"></span>find</div>
+    <div class="chip"><span class="chip-dot"></span>some / every</div>
+    <div class="chip"><span class="chip-dot"></span>includes</div>
+
+    <p class="sub-title">9.1 map – biến đổi từng phần tử</p>
+    <div class="example-block">
+      <div class="example-title">Nhân đôi mảng số</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const nums = [1, 2, 3];
+
+const doubled = nums.map(n => n * 2);
+
+console.log(doubled);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            [2, 4, 6]
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">9.2 filter – lọc theo điều kiện</p>
+    <div class="example-block">
+      <div class="example-title">Lọc số chẵn</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const nums = [1, 2, 3, 4, 5];
+
+const even = nums.filter(n => n % 2 === 0);
+
+console.log(even);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            [2, 4]
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">9.3 reduce – gộp thành 1 giá trị</p>
+    <div class="example-block">
+      <div class="example-title">Tính tổng mảng</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const nums = [1, 2, 3, 4];
+
+const sum = nums.reduce((acc, cur) => acc + cur, 0);
+
+console.log(sum);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            10
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Trong React / Vue / Node: 90% thao tác dữ liệu list đều đi qua <code>map / filter / reduce / find</code>.
+    </div>
+  </section>
+
+  <!-- 10. Object & destructuring -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill obj">Ob</div>
+        <h2>10. Object, destructuring &amp; spread</h2>
+        <span class="freq high">RẤT QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Dùng cực nhiều</span>
+    </div>
+
+    <p class="sub-title">10.1 Object cơ bản</p>
+    <div class="example-block">
+      <div class="example-title">Tạo &amp; truy cập object</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const user = {
+  name: "Ngọc",
+  age: 21,
+  address: {
+    city: "Đà Nẵng",
+    country: "VN"
+  }
+};
+
+console.log(user.name);
+console.log(user.address.city);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "Ngọc"
+            "Đà Nẵng"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">10.2 Destructuring &amp; spread</p>
+    <div class="example-block">
+      <div class="example-title">Lấy ra field + clone object</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const user = { name: "Ngọc", age: 21, city: "Đà Nẵng" };
+
+const { name, age } = user;        // destructuring
+const user2 = { ...user, age: 22 }; // spread
+
+console.log(name, age);
+console.log(user2);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "Ngọc" 21
+            { name: "Ngọc", age: 22, city: "Đà Nẵng" }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">🧠 Optional chaining: <code>user.address?.city</code> – nếu <code>address</code> null/undefined thì
+      không lỗi, trả về <code>undefined</code>.</p>
+  </section>
+
+  <!-- 11. DOM cơ bản -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill dom">DOM</div>
+        <h2>11. DOM – chọn &amp; chỉnh sửa phần tử</h2>
+        <span class="freq high">RẤT HAY GẶP</span>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Làm web là đụng</span>
+    </div>
+
+    <p>Các API hay dùng:</p>
+    <div class="chip pink"><span class="chip-dot"></span>document.querySelector</div>
+    <div class="chip green"><span class="chip-dot"></span>textContent / innerHTML</div>
+    <div class="chip yellow"><span class="chip-dot"></span>classList.add / remove / toggle</div>
+    <div class="chip"><span class="chip-dot"></span>style</div>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ thay đổi text &amp; class</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;h1 id="title"&gt;Tiêu đề cũ&lt;/h1&gt;</code></pre>
+          <div class="example-col-label">JS:</div>
+          <pre><code>const title = document.querySelector("#title");
+title.textContent = "Tiêu đề mới từ JS";
+title.classList.add("text-red");</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả (trên UI):</div>
+          <div class="example-output">
+            H1 hiển thị: "Tiêu đề mới từ JS"
+            Và được thêm class "text-red"
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Sự kiện -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill event">Ev</div>
+        <h2>12. Event – click, input, submit...</h2>
+        <span class="freq high">RẤT HAY GẶP</span>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Tương tác UI</span>
+    </div>
+
+    <p class="sub-title">12.1 Lắng nghe sự kiện click</p>
+    <div class="example-block">
+      <div class="example-title">Ví dụ button click</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;button id="btn"&gt;Bấm tui&lt;/button&gt;</code></pre>
+          <div class="example-col-label">JS:</div>
+          <pre><code>const btn = document.querySelector("#btn");
+
+btn.addEventListener("click", () => {
+  console.log("Bạn vừa bấm nút!");
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            Mỗi lần bấm nút:
+            Console: "Bạn vừa bấm nút!"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">12.2 Form submit</p>
+    <div class="example-block">
+      <div class="example-title">Chặn reload &amp; lấy value</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;form id="login-form"&gt;
+  &lt;input id="username" /&gt;
+  &lt;button type="submit"&gt;Login&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+          <div class="example-col-label">JS:</div>
+          <pre><code>const form = document.querySelector("#login-form");
+const usernameInput = document.querySelector("#username");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault(); // chặn reload
+  console.log("User:", usernameInput.value);
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            Nhấn Login:
+            Console: "User: [giá trị bạn nhập]"
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. JSON & localStorage -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill store">LS</div>
+        <h2>13. JSON &amp; localStorage</h2>
+        <span class="freq high">RẤT THƯỜNG DÙNG</span>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Lưu data trình duyệt</span>
+    </div>
+
+    <p class="sub-title">13.1 JSON.stringify &amp; JSON.parse</p>
+    <div class="example-block">
+      <div class="example-title">Chuyển object ⇄ JSON</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const user = { name: "Ngọc", age: 21 };
+
+const json = JSON.stringify(user);
+console.log(json);
+
+const back = JSON.parse(json);
+console.log(back.name);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            '{"name":"Ngọc","age":21}'
+            "Ngọc"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">13.2 localStorage – lưu dữ liệu</p>
+    <div class="example-block">
+      <div class="example-title">Lưu user vào localStorage</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const user = { name: "Ngọc", theme: "dark" };
+
+localStorage.setItem("user", JSON.stringify(user));
+
+const raw = localStorage.getItem("user");
+const parsed = JSON.parse(raw);
+
+console.log(parsed.theme);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "dark"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Dùng cực nhiều cho: token, theme, giỏ hàng, form draft,... trong frontend SPA.
+    </div>
+  </section>
+
+  <!-- 14. Promise & async/await -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill async">As</div>
+        <h2>14. Promise &amp; async/await (call API)</h2>
+        <span class="freq high">CỰC KỲ QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Call API</span>
+    </div>
+
+    <p class="sub-title">14.1 Promise cơ bản</p>
+    <div class="example-block">
+      <div class="example-title">Ví dụ Promise</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const p = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("Xong việc!");
+  }, 1000);
+});
+
+p.then((result) => {
+  console.log(result);
+}).catch((err) => {
+  console.error(err);
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả (sau 1s):</div>
+          <div class="example-output">
+            "Xong việc!"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">14.2 async/await + fetch 🔥</p>
+    <div class="example-block">
+      <div class="example-title">Call API (giả lập)</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>async function loadData() {
+  try {
+    const res = await fetch("https://example.com/api");
+    const data = await res.json();
+    console.log(data);
+  } catch (err) {
+    console.error("Lỗi:", err);
+  }
+}</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả (khi API ok):</div>
+          <div class="example-output">
+            Console: In ra object JSON trả về từ API
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Trong dự án thật: tất cả call API đều xoay quanh <code>fetch</code>, <code>axios</code>,
+      <code>async/await</code>,
+      <code>try/catch</code>.
+    </div>
+  </section>
+
+  <!-- 15. Lỗi, try/catch, debug, strict mode -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill error">Err</div>
+        <h2>15. Xử lý lỗi: try/catch, strict mode, console</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">Error Handling</span>
+    </div>
+
+    <p class="sub-title">15.1 try / catch</p>
+    <div class="example-block">
+      <div class="example-title">Bắt lỗi JSON sai</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const json = "{bad json}";
+
+try {
+  const data = JSON.parse(json);
+  console.log(data);
+} catch (err) {
+  console.error("Parse JSON lỗi:", err.message);
+}</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            Console:
+            "Parse JSON lỗi: Unexpected token b in JSON at position 1"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">15.2 'use strict'</p>
+    <div class="example-block">
+      <div class="example-title">Strict mode</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>"use strict";
+
+x = 10; // ❌ Lỗi, vì chưa khai báo let/const/var</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            Console: ReferenceError: x is not defined
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">🧠 Dùng <code>console.log</code>, <code>console.error</code> + tab DevTools của trình duyệt là combo
+      debug cơ bản nhất.</p>
+  </section>
+
+  <!-- 16. ES6+: default param, rest, spread -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill es">ES</div>
+        <h2>16. ES6+: default params, rest &amp; spread</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">ES6+</span>
+    </div>
+
+    <p class="sub-title">16.1 Default parameter</p>
+    <div class="example-block">
+      <div class="example-title">Giá trị mặc định</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>function greet(name = "bạn") {
+  console.log(`Xin chào, ${name}`);
+}
+
+greet("Ngọc");
+greet();</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "Xin chào, Ngọc"
+            "Xin chào, bạn"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">16.2 Rest parameter</p>
+    <div class="example-block">
+      <div class="example-title">Nhận nhiều tham số</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>function sumAll(...nums) {
+  return nums.reduce((acc, n) => acc + n, 0);
+}
+
+console.log(sumAll(1, 2, 3, 4));</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            10
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">16.3 Spread cho array &amp; object</p>
+    <div class="example-block">
+      <div class="example-title">Ghép mảng &amp; object</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const a = [1, 2];
+const b = [3, 4];
+const merged = [...a, ...b];
+
+const u1 = { name: "Ngọc" };
+const u2 = { age: 21 };
+const u3 = { ...u1, ...u2 };
+
+console.log(merged);
+console.log(u3);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            [1, 2, 3, 4]
+            { name: "Ngọc", age: 21 }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. this & bind/call/apply -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill this">Th</div>
+        <h2>17. this &amp; bind / call / apply</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">this</span>
+    </div>
+
+    <p class="sub-title">17.1 this trong method object</p>
+    <div class="example-block">
+      <div class="example-title">Method dùng this</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const user = {
+  name: "Ngọc",
+  sayHi() {
+    console.log("Hi, mình là", this.name);
+  },
+};
+
+user.sayHi();</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "Hi, mình là Ngọc"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">17.2 bind</p>
+    <div class="example-block">
+      <div class="example-title">Giữ ngữ cảnh this</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const say = user.sayHi;
+say(); // this không còn là user
+
+const sayBound = user.sayHi.bind(user);
+sayBound(); // this là user</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ý chính:</div>
+          <div class="example-output">
+            bind() giúp gắn cố định this cho function.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18. Closure -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill closure">Cl</div>
+        <h2>18. Closure – hàm nhớ được scope</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">Closure</span>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ counter dùng closure</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>function createCounter() {
+  let count = 0;
+  return function () {
+    count++;
+    console.log("Count:", count);
+  }
+}
+
+const inc = createCounter();
+inc(); // 1
+inc(); // 2</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ý nghĩa:</div>
+          <div class="example-output">
+            Hàm con "nhớ" được biến count ở scope bên ngoài.
+            Dùng nhiều trong JS nâng cao, hook React, v.v.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19. Class & prototype -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill class">Cs</div>
+        <h2>19. class &amp; prototype</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">OOP</span>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Class cơ bản</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  sayHi() {
+    console.log(`Hi, mình là ${this.name}`);
+  }
+}
+
+const p = new Person("Ngọc", 21);
+p.sayHi();</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            "Hi, mình là Ngọc"
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20. Module import/export -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill mod">Md</div>
+        <h2>20. Module: import / export (ESM)</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">Modules</span>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Tách file module</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">math.js:</div>
+          <pre><code>export function sum(a, b) {
+  return a + b;
+}
+
+export const PI = 3.14;</code></pre>
+          <div class="example-col-label">main.js:</div>
+          <pre><code>import { sum, PI } from "./math.js";
+
+console.log(sum(2, 3), PI);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ý chính:</div>
+          <div class="example-output">
+            Browser hiện đại + bundler (Vite/Webpack) support ESM:
+            import / export giúp tách nhỏ code rõ ràng.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 21. Map & Set -->
+  <section class="section important-low">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill mapset">MS</div>
+        <h2>21. Cấu trúc Map &amp; Set</h2>
+        <span class="freq low">ÍT GẶP CHO BEGINNER</span>
+      </div>
+      <span class="tag tag-js">Map/Set</span>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Set để loại trùng</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const nums = [1, 1, 2, 3, 3];
+const unique = [...new Set(nums)];
+console.log(unique);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            [1, 2, 3]
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Map key không chỉ là string</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const m = new Map();
+m.set("name", "Ngọc");
+m.set({ id: 1 }, "Object key");
+
+console.log(m.get("name"));</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ý chính:</div>
+          <div class="example-output">
+            Map cho phép dùng object, function làm key.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 22. Date & Intl -->
+  <section class="section important-low">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill date">Dt</div>
+        <h2>22. Date &amp; format với Intl</h2>
+        <span class="freq low">ÍT GẶP</span>
+      </div>
+      <span class="tag tag-js">Date/Time</span>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Date cơ bản</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const now = new Date();
+console.log(now.toISOString());</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ví dụ:</div>
+          <div class="example-output">
+            "2025-03-01T12:34:56.789Z"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Intl.DateTimeFormat</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const dt = new Date();
+const fmt = new Intl.DateTimeFormat("vi-VN", {
+  dateStyle: "medium",
+  timeStyle: "short",
+});
+
+console.log(fmt.format(dt));</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ví dụ:</div>
+          <div class="example-output">
+            "1 thg 3, 2025, 19:30"
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 23. Regex -->
+  <section class="section important-low">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill regex">Rx</div>
+        <h2>23. Biểu thức chính quy (RegExp)</h2>
+        <span class="freq low">ÍT GẶP</span>
+      </div>
+      <span class="tag tag-js">Regex</span>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ kiểm tra email đơn giản</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const email = "test@example.com";
+const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+console.log(regex.test(email));</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+            true
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 24. Debounce & Throttle -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill util">Db</div>
+        <h2>24. Debounce &amp; Throttle (tối ưu event)</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-js">Performance</span>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Debounce – chỉ chạy sau khi ngưng bắn event</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>function debounce(fn, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
+const onSearch = debounce((q) => {
+  console.log("Call API với:", q);
+}, 300);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ý nghĩa:</div>
+          <div class="example-output">
+            Dùng cho ô search: user gõ xong 300ms mới call API,
+            tránh spam request.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 25. Math & Number utils -->
+  <section class="section important-low">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill util">Mt</div>
+        <h2>25. Một số tiện ích Math &amp; Number</h2>
+        <span class="freq low">ÍT GẶP</span>
+      </div>
+      <span class="tag tag-js">Utils</span>
+    </div>
+
+    <div class="example-block">
+      <div class="example-title">Làm tròn &amp; random</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>console.log(Math.round(3.6)); // 4
+console.log(Math.floor(3.6)); // 3
+console.log(Math.ceil(3.1));  // 4
+
+// Random số nguyên [min, max]
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+console.log(randInt(1, 10));</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ý nghĩa:</div>
+          <div class="example-output">
+            Hay dùng cho: random quiz, OTP giả lập, màu ngẫu nhiên...
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const input = document.querySelector('.search-input');
+      const btn = document.querySelector('.search-btn');
+      const resultsEl = document.querySelector('.search-results');
+
+      if (!input || !btn || !resultsEl) return;
+
+      const current = location.pathname.split("/").pop() || "Html.html";
+
+      const map = {
+        "Html.html": "tab-html",
+        "Css.html": "tab-css",
+        "Js.html": "tab-js",
+        "NodeJs.html": "tab-node",
+        "ReacjsTailwind.html": "tab-react",
+        "Jquery.html": "tab-jquery"
+      };
+
+      const activeId = map[current];
+      if (activeId) {
+        const el = document.getElementById(activeId);
+        if (el) el.classList.add("active");
+      }
+
+      const sectionEls = Array.from(document.querySelectorAll('section.section'));
+      const data = sectionEls.map((sec, idx) => {
+        let id = sec.id;
+        if (!id) {
+          id = 'sec-' + (idx + 1);
+          sec.id = id;
+        }
+        const titleEl = sec.querySelector('h2');
+        const title = titleEl ? titleEl.textContent.trim() : 'Mục ' + (idx + 1);
+        const text = sec.textContent.toLowerCase();
+        return { id, title, text, element: sec };
+      });
+
+      let currentResults = [];
+      let activeIndex = -1;
+
+      function clearHighlight() {
+        document.querySelectorAll('.search-hit').forEach(el => {
+          el.classList.remove('search-hit');
+        });
+      }
+
+      function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, c => {
+          const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+          };
+          return map[c] || c;
+        });
+      }
+
+      function makeSnippet(fullText, query) {
+        const lower = fullText.toLowerCase();
+        const q = query.toLowerCase();
+        const idx = lower.indexOf(q);
+        if (idx === -1) return '';
+        const radius = 40;
+        let start = Math.max(0, idx - radius);
+        let end = Math.min(fullText.length, idx + q.length + radius);
+        let snippet = fullText.slice(start, end).replace(/\s+/g, ' ');
+        if (start > 0) snippet = '...' + snippet;
+        if (end < fullText.length) snippet = snippet + '...';
+        return snippet;
+      }
+
+      function renderResults(query) {
+        resultsEl.innerHTML = '';
+        activeIndex = -1;
+
+        if (!query) {
+          return;
+        }
+
+        const q = query.toLowerCase();
+        currentResults = data.filter(sec => sec.text.includes(q));
+
+        if (currentResults.length === 0) {
+          resultsEl.innerHTML =
+            '<li class="search-result-empty">Không tìm thấy kết quả cho: <strong>' +
+            escapeHtml(query) +
+            '</strong></li>';
+          return;
+        }
+
+        const itemsHtml = currentResults.map((sec, idx) => {
+          const snippet = makeSnippet(sec.text, q);
+          return `
+<li class="search-result-item" data-index="${idx}">
+  <div class="search-result-icon">⌕</div>
+  <div class="search-result-content">
+    <div class="search-result-title">${escapeHtml(sec.title)}</div>
+    <div class="search-result-snippet">${escapeHtml(snippet)}</div>
+  </div>
+</li>`;
+        }).join('');
+
+        resultsEl.innerHTML = itemsHtml;
+      }
+
+      function scrollToResult(index) {
+        const item = currentResults[index];
+        if (!item) return;
+        clearHighlight();
+        item.element.classList.add('search-hit');
+        item.element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        resultsEl.innerHTML = '';
+      }
+
+      function doSearch() {
+        const q = input.value.trim();
+        if (!q) {
+          resultsEl.innerHTML = '';
+          currentResults = [];
+          activeIndex = -1;
+          return;
+        }
+        renderResults(q);
+      }
+
+      function updateActiveItem() {
+        const items = Array.from(resultsEl.querySelectorAll('.search-result-item'));
+        items.forEach((li, idx) => {
+          li.classList.toggle('is-active', idx === activeIndex);
+        });
+      }
+
+      btn.addEventListener('click', doSearch);
+
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          if (currentResults.length > 0 && activeIndex >= 0) {
+            e.preventDefault();
+            scrollToResult(activeIndex);
+          } else {
+            e.preventDefault();
+            doSearch();
+          }
+        } else if (e.key === 'ArrowDown') {
+          if (!currentResults.length) return;
+          e.preventDefault();
+          activeIndex = (activeIndex + 1) % currentResults.length;
+          updateActiveItem();
+        } else if (e.key === 'ArrowUp') {
+          if (!currentResults.length) return;
+          e.preventDefault();
+          activeIndex = (activeIndex - 1 + currentResults.length) % currentResults.length;
+          updateActiveItem();
+        }
+      });
+
+      resultsEl.addEventListener('click', function (e) {
+        const item = e.target.closest('.search-result-item');
+        if (!item) return;
+        const index = Number(item.dataset.index);
+        scrollToResult(index);
+      });
+
+      document.addEventListener('click', function (e) {
+        const wrapper = document.querySelector('.search-wrapper');
+        if (!wrapper.contains(e.target)) {
+          resultsEl.innerHTML = '';
+          currentResults = [];
+          activeIndex = -1;
+        }
+      });
+
+      /* ===== BỘ LỌC ĐỘ QUAN TRỌNG ===== */
+      const filterButtons = document.querySelectorAll('.filter-btn');
+
+      function applyFilter(level) {
+        sectionEls.forEach(sec => {
+          if (level === 'all') {
+            sec.style.display = '';
+            return;
+          }
+          const className = 'important-' + level;
+          if (sec.classList.contains(className)) {
+            sec.style.display = '';
+          } else {
+            sec.style.display = 'none';
+          }
+        });
+      }
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const level = btn.dataset.level;
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          applyFilter(level);
+        });
+      });
+    })();
+  </script>
+
+</body>
+
+</html>

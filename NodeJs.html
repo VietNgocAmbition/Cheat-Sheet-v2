@@ -1,0 +1,2328 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>NodeJS Cheat Sheet</title>
+  <link rel="icon" type="image/png" href="logo2.png">
+
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-card: #020617;
+      --bg-soft: #0b1120;
+      --accent-pink: #f472b6;
+      --accent-blue: #38bdf8;
+      --accent-green: #22c55e;
+      --accent-yellow: #eab308;
+      --accent-purple: #a855f7;
+      --accent-red: #fb7185;
+      --accent-orange: #fb923c;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --code-bg: #020617;
+      --border-soft: rgba(148, 163, 184, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* ===== MENU 5 FILE – STYLE GIỐNG TABS ===== */
+    .top-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      backdrop-filter: none;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+
+    .top-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      font-size: 0.86rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition:
+        background 0.15s,
+        color 0.15s,
+        border-color 0.15s,
+        transform 0.1s,
+        box-shadow 0.15s;
+    }
+
+    .top-tab-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-blue);
+    }
+
+    .top-tab-btn:hover {
+      color: #e5e7eb;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
+    }
+
+.subtitle a {
+  color: var(--text-main);     
+  font-weight: 600;             
+  text-decoration: none;        
+  transition: color 0.2s ease;   
+}
+.subtitle a:hover {
+  color: var(--accent-blue);     
+  text-decoration: underline;    /
+}
+    .top-tab-btn.active {
+      color: #0b1120;
+      border-color: var(--accent-blue);
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .top-tab-btn.active .top-tab-dot {
+      background: #0b1120;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.7;
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px 40px;
+      background: radial-gradient(circle at top left, #1e293b 0, #020617 60%);
+      color: var(--text-main);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #f9fafb;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-soft);
+      margin-bottom: 10px;
+      font-size: 0.96rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.35), rgba(52, 211, 153, 0.2));
+      margin-bottom: 10px;
+    }
+
+    .badge span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent-green);
+    }
+
+    /* ===== FILTER QUAN TRỌNG ===== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 18px;
+    }
+
+    .filter-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s;
+    }
+
+    .filter-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.9);
+    }
+
+    .filter-btn[data-level="high"] .filter-dot {
+      background: var(--accent-red);
+    }
+
+    .filter-btn[data-level="mid"] .filter-dot {
+      background: var(--accent-blue);
+    }
+
+    .filter-btn[data-level="low"] .filter-dot {
+      background: var(--accent-yellow);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
+      color: #0b1120;
+      border-color: transparent;
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.35);
+    }
+
+    /* ===== SECTION ===== */
+    .section {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.9);
+    }
+
+    .section.important-high {
+      border-left: 3px solid var(--accent-pink);
+    }
+
+    .section.important-mid {
+      border-left: 3px solid var(--accent-blue);
+    }
+
+    .section.important-low {
+      border-left: 3px solid rgba(148, 163, 184, 0.8);
+    }
+
+    .sec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .sec-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .pill {
+      width: 26px;
+      height: 26px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #020617;
+    }
+
+    .pill.core {
+      background: var(--accent-green);
+    }
+
+    .pill.npm {
+      background: var(--accent-orange);
+    }
+
+    .pill.module {
+      background: var(--accent-blue);
+    }
+
+    .pill.fs {
+      background: var(--accent-yellow);
+    }
+
+    .pill.http {
+      background: var(--accent-red);
+    }
+
+    .pill.express {
+      background: var(--accent-purple);
+    }
+
+    .pill.api {
+      background: #22d3ee;
+    }
+
+    .pill.db {
+      background: #22c55e;
+    }
+
+    .pill.auth {
+      background: #f97316;
+    }
+
+    .pill.deploy {
+      background: #a3e635;
+    }
+
+    .pill.tools {
+      background: #4ade80;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .tag-node {
+      border-color: rgba(74, 222, 128, 0.9);
+      color: #bbf7d0;
+    }
+
+    .freq {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+    }
+
+    .freq.high {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+      background: rgba(127, 29, 29, 0.4);
+    }
+
+    .freq.mid {
+      border-color: rgba(59, 130, 246, 0.9);
+      color: #bfdbfe;
+      background: rgba(30, 64, 175, 0.45);
+    }
+
+    .freq.low {
+      border-color: rgba(234, 179, 8, 0.9);
+      color: #fef9c3;
+      background: rgba(113, 63, 18, 0.45);
+    }
+
+    p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+
+    ul,
+    ol {
+      margin: 6px 0 8px 18px;
+      font-size: 0.94rem;
+    }
+
+    li+li {
+      margin-top: 3px;
+    }
+
+    code {
+      background-color: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.86rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      overflow-x: auto;
+      font-size: 0.86rem;
+      margin: 8px 0;
+    }
+
+    pre code {
+      border: none;
+      padding: 0;
+      background: transparent;
+    }
+
+    .sub-title {
+      font-weight: 600;
+      color: var(--accent-blue);
+      margin-top: 4px;
+      margin-bottom: 4px;
+      font-size: 0.94rem;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+    }
+
+    .important {
+      border-left: 3px solid var(--accent-yellow);
+      padding-left: 10px;
+      margin-top: 8px;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .hot {
+      color: var(--accent-red);
+      font-weight: 600;
+    }
+
+    .hot-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+      background: rgba(127, 29, 29, 0.4);
+      margin-left: 6px;
+    }
+
+    .hot-badge::before {
+      content: "🔥";
+      font-size: 0.75rem;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background-color: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      margin-right: 6px;
+      margin-top: 4px;
+    }
+
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-blue);
+    }
+
+    .chip.green .chip-dot {
+      background: var(--accent-green);
+    }
+
+    .chip.red .chip-dot {
+      background: var(--accent-red);
+    }
+
+    .chip.yellow .chip-dot {
+      background: var(--accent-yellow);
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0 12px 28px;
+      }
+    }
+
+    /* ===== Khung tìm kiếm ===== */
+    .search-wrapper {
+      position: sticky;
+      top: 50px;
+      z-index: 40;
+      max-width: 750px;
+      margin: 12px auto 18px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: linear-gradient(135deg,
+          rgba(15, 23, 42, 0.95),
+          rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.85);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      padding: 6px 8px 6px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    .search-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent-green);
+    }
+
+    .search-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      padding: 4px 8px;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-soft);
+      opacity: 0.8;
+    }
+
+    .search-btn {
+      flex-shrink: 0;
+      border: none;
+      outline: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: linear-gradient(135deg,
+          var(--accent-green),
+          var(--accent-blue));
+      color: #0b1120;
+      box-shadow: 0 6px 16px rgba(74, 222, 128, 0.45);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 9px 22px rgba(74, 222, 128, 0.55);
+      filter: brightness(1.05);
+    }
+
+    .search-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.8);
+    }
+
+    .search-hint {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    .search-results {
+      margin-top: 6px;
+      padding: 4px 0;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      list-style: none;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .search-results:empty {
+      display: none;
+    }
+
+    .search-result-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+
+    .search-result-item:hover,
+    .search-result-item.is-active {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .search-result-icon {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--text-soft);
+      font-size: 0.65rem;
+    }
+
+    .search-result-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-result-title {
+      color: var(--text-main);
+      font-weight: 500;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .search-result-snippet {
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .search-result-empty {
+      padding: 6px 10px;
+      font-size: 0.86rem;
+      color: var(--text-soft);
+    }
+
+    .search-hit {
+      outline: 2px solid var(--accent-green);
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.4);
+      border-radius: 6px;
+      animation: searchBlink 1s ease-out 0s 1;
+    }
+
+    @keyframes searchBlink {
+      0% {
+        background-color: rgba(34, 197, 94, 0.22);
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    .author-links {
+      margin-bottom: 26px;
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .author-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-main);
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .author-item:hover {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .github-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--accent-blue);
+    }
+
+    .money-icon {
+      width: 20px;
+      height: 20px;
+      color: #0b1120;
+    }
+
+    .donate-box {
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+      color: #0b1120;
+      border-color: transparent;
+      box-shadow: 0 0 20px rgba(244, 114, 182, 0.35);
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>NODEJS CHEAT SHEET</h1>
+    <p class="subtitle">
+        Tham khảo <a href="https://www.tutorialspoint.com/nodejs/nodejs_cheatsheet.htm
+"><i>Nguồn</i></a>
+        </span>
+    </p>
+  <p class="subtitle">- Ikigai, Kaizen, Shu-Ha-Ri -</p>
+
+  <div class="author-links">
+    <a href="https://github.com/VietNgocAmbition" target="_blank" class="author-item">
+      <svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path
+          d="M9 19c-4.3 1-4.3-2.5-6-3m12 5v-3.5c0-.9.1-1.3-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.3 1.2a11.3 11.3 0 0 0-6 0C7 2.8 6 3 6 3a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.6 9.4c0 4.5 2.7 5.7 5.5 6-.3.4-.6 1.1-.7 2V21" />
+      </svg>
+      <span>GitHub: VietNgocAmbition</span>
+    </a>
+
+    <div class="author-item donate-box">
+      <svg class="money-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+        <circle cx="12" cy="12" r="3"></circle>
+        <path
+          d="M2 10c2 0 3-2 3-2m17 2c-2 0-3-2-3-2m-14 6c2 0 3 2 3 2m14-2c-2 0-3 2-3 2">
+        </path>
+      </svg>
+      <span>Donate: TPBank - 26304032004</span>
+    </div>
+  </div>
+
+  <nav class="top-tabs">
+    <a href="Html.html" class="top-tab-btn" id="tab-html">
+      <span class="top-tab-dot"></span>
+      HTML
+    </a>
+    <a href="Css.html" class="top-tab-btn" id="tab-css">
+      <span class="top-tab-dot"></span>
+      CSS
+    </a>
+    <a href="Jquery.html" class="top-tab-btn" id="tab-jquery">
+      <span class="top-tab-dot"></span>
+      Jquery
+    </a>
+    <a href="Js.html" class="top-tab-btn" id="tab-js">
+      <span class="top-tab-dot"></span>
+      JavaScript
+    </a>
+    <a href="ReacjsTailwind.html" class="top-tab-btn" id="tab-react">
+      <span class="top-tab-dot"></span>
+      ReactJS & Tailwind & Redux Toolkit
+    </a>
+    <a href="NodeJs.html" class="top-tab-btn" id="tab-node">
+      <span class="top-tab-dot"></span>
+      NodeJS
+    </a>
+    <a href="#" class="top-tab-btn" id="tab-ts">
+      <span class="top-tab-dot"></span>
+      Typescript (Đang học)
+    </a>
+  </nav>
+
+  <!-- Khung tìm kiếm + dropdown kết quả -->
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <span class="search-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M10.5 4a6.5 6.5 0 0 1 5.11 10.57l3.91 3.91a1 1 0 0 1-1.42 1.42l-3.91-3.91A6.5 6.5 0 1 1 10.5 4zm0 2a4.5 4.5 0 1 0 0 9a4.5 4.5 0 0 0 0-9z" />
+        </svg>
+      </span>
+      <input type="text" class="search-input" placeholder="Tìm: express, fs, http, jwt, mongoose, pm2...">
+      <button class="search-btn" type="button">
+        Tìm kiếm
+      </button>
+    </div>
+    <p class="search-hint">
+      Gõ từ khóa rồi nhấn <strong>Enter</strong> hoặc nút <strong>Tìm kiếm</strong>
+    </p>
+    <ul class="search-results"></ul>
+  </div>
+
+  <div class="badge"><span></span> NodeJS</div>
+
+  <!-- BỘ LỌC ĐỘ QUAN TRỌNG -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-level="all">
+      <span class="filter-dot"></span>
+      Tất cả
+    </button>
+    <button class="filter-btn" data-level="high">
+      <span class="filter-dot"></span>
+      Rất quan trọng
+    </button>
+    <button class="filter-btn" data-level="mid">
+      <span class="filter-dot"></span>
+      Trung bình
+    </button>
+    <button class="filter-btn" data-level="low">
+      <span class="filter-dot"></span>
+      Ít gặp
+    </button>
+  </div>
+
+  <!-- 1. NodeJS là gì & Event Loop -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill core">N1</div>
+        <h2>1. NodeJS là gì? – Runtime &amp; Event Loop</h2>
+        <span class="freq high">CƠ BẢN • RẤT QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-node">Core Concept</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <ul>
+          <li><span class="hot">NodeJS</span> là môi trường chạy JS <strong>ngoài trình duyệt</strong>.</li>
+          <li>Dựa trên <code>V8 Engine</code> (Google Chrome).</li>
+          <li>Non-blocking I/O, <span class="hot">event-driven</span>, rất hợp để làm API.</li>
+          <li>1 thread chính + <code>event loop</code> xử lý async.</li>
+        </ul>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>// hello.js
+console.log("Xin chào từ NodeJS");</code></pre>
+        <pre><code># Chạy file
+node hello.js
+
+# Kết quả:
+Xin chào từ NodeJS</code></pre>
+      </div>
+    </div>
+
+    <div class="important">
+      <span class="hot">Ghi nhớ:</span> NodeJS không phải framework, mà là <strong>runtime</strong>.
+      Express, NestJS... mới là framework chạy trên Node.
+    </div>
+  </section>
+
+  <!-- 2. Cài Node, npm & npm init -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill core">N2</div>
+        <h2>2. Cài Node, npm &amp; khởi tạo dự án</h2>
+        <span class="freq high">CƠ BẢN</span>
+      </div>
+      <span class="tag tag-node">Setup</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code># Kiểm tra phiên bản
+node -v
+npm -v</code></pre>
+
+        <pre><code># Tạo folder mới
+mkdir my-app
+cd my-app
+
+# Khởi tạo package.json
+npm init -y    # tạo nhanh với default</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>my-app/
+  ├─ package.json
+  ├─ package-lock.json
+  └─ index.js</code></pre>
+
+        <p class="note">
+          <span class="hot-badge">Rất hay gặp</span>
+          Mọi dự án Node nghiêm túc đều có <code>package.json</code> để lưu info + dependencies + scripts.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. NPM & package.json -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill npm">N3</div>
+        <h2>3. NPM &amp; package.json</h2>
+        <span class="freq high">RẤT HAY GẶP</span>
+      </div>
+      <span class="tag tag-node">NPM</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code># Cài lib thường dùng
+npm install express          # dependencies (prod)
+npm install nodemon --save-dev  # devDependencies</code></pre>
+
+        <pre><code>{
+  "name": "my-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code># Chạy script "start"
+npm run start
+
+# Chạy script "dev"
+npm run dev</code></pre>
+
+        <p class="note">
+          <span class="hot-badge">Rất hay gặp</span>
+          Define script <code>"dev"</code> + dùng <code>nodemon</code> là pattern quen thuộc trong mọi dự án Node.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Module system (CommonJS & ESM) -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill module">N4</div>
+        <h2>4. Module system: CommonJS &amp; ES Module</h2>
+        <span class="freq high">CƠ BẢN</span>
+      </div>
+      <span class="tag tag-node">Modules</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích – CommonJS</p>
+        <pre><code>// math.js
+function sum(a, b) {
+  return a + b;
+}
+
+module.exports = { sum };</code></pre>
+
+        <pre><code>// index.js
+const { sum } = require("./math");
+
+console.log(sum(2, 3)); // 5</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">ES Module &amp; Kết quả</p>
+        <pre><code>// package.json
+{
+  "type": "module"
+}</code></pre>
+
+        <pre><code>// math.js
+export function sum(a, b) {
+  return a + b;
+}
+
+// index.js
+import { sum } from "./math.js";
+
+console.log(sum(4, 6)); // 10</code></pre>
+
+        <p class="note">
+          <span class="hot-badge">Quan trọng</span>
+          Dự án mới thường dùng <code>"type": "module"</code> + <code>import/export</code>.
+          Dự án cũ vẫn dùng <code>require/module.exports</code>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Đường dẫn & môi trường -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill module">N5</div>
+        <h2>5. Đường dẫn, __dirname, process.env</h2>
+        <span class="freq high">RẤT HAY GẶP</span>
+      </div>
+      <span class="tag tag-node">Path &amp; Env</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>const path = require("path");
+
+console.log(__dirname); // thư mục hiện tại
+
+const filePath = path.join(__dirname, "data", "file.txt");
+console.log(filePath);</code></pre>
+
+        <pre><code>// .env (dùng dotenv)
+PORT=4000
+MONGO_URL=mongodb://localhost:27017/mydb</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>npm install dotenv</code></pre>
+        <pre><code>// index.js
+require("dotenv").config();
+
+const port = process.env.PORT || 3000;
+console.log("Server sẽ chạy cổng:", port);</code></pre>
+
+        <p class="note">
+          <span class="hot-badge">Rất hay gặp</span>
+          Luôn dùng <code>dotenv</code> + <code>process.env</code> để không hard-code password, URL DB.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. File system (fs) cơ bản -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill fs">N6</div>
+        <h2>6. File system (fs) – đọc/ghi file</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">fs</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích (callback)</p>
+        <pre><code>const fs = require("fs");
+const path = require("path");
+
+const filePath = path.join(__dirname, "note.txt");
+
+// Ghi file
+fs.writeFile(filePath, "Xin chào NodeJS", (err) =&gt; {
+  if (err) return console.error(err);
+  console.log("Đã ghi file!");
+
+  // Đọc file
+  fs.readFile(filePath, "utf8", (err, data) =&gt; {
+    if (err) return console.error(err);
+    console.log("Nội dung:", data);
+  });
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">fs/promises &amp; Kết quả</p>
+        <pre><code>const fs = require("fs/promises");
+
+async function main() {
+  await fs.writeFile("data.txt", "Hello from async/await");
+  const content = await fs.readFile("data.txt", "utf8");
+  console.log(content);
+}
+
+main().catch(console.error);</code></pre>
+        <p class="note">
+          <span class="hot-badge">Quan trọng</span>
+          Thực tế nên ưu tiên dùng <code>fs/promises</code> + <code>async/await</code> cho code gọn &amp; dễ đọc.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. HTTP server thuần -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill http">N7</div>
+        <h2>7. HTTP Server thuần (không dùng Express)</h2>
+        <span class="freq mid">NỀN TẢNG</span>
+      </div>
+      <span class="tag tag-node">http</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>const http = require("http");
+
+const server = http.createServer((req, res) =&gt; {
+  if (req.url === "/" &amp;&amp; req.method === "GET") {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Hello từ server HTTP thuần!");
+  } else {
+    res.writeHead(404, { "Content-Type": "text/plain" });
+    res.end("Không tìm thấy!");
+  }
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>server.listen(3000, () =&gt; {
+  console.log("Server chạy ở http://localhost:3000");
+});</code></pre>
+
+        <ul>
+          <li>Truy cập <code>http://localhost:3000</code> → hiện text.</li>
+          <li>Nhược điểm: phải tự parse body, router → rất mệt.</li>
+        </ul>
+
+        <p class="note">
+          <span class="hot-badge">Hiểu để biết nền tảng</span>
+          Dù ít dùng thực tế, biết http thuần giúp hiểu Express hoạt động bên trong.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Express cơ bản -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill express">N8</div>
+        <h2>8. ExpressJS cơ bản – tạo server &amp; routing</h2>
+        <span class="freq high">RẤT QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-node">Express</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install express</code></pre>
+        <pre><code>// index.js
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware parse JSON
+app.use(express.json());
+
+app.get("/", (req, res) =&gt; {
+  res.send("Hello từ Express!");
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>app.listen(PORT, () =&gt; {
+  console.log(`Server chạy ở http://localhost:${PORT}`);
+});</code></pre>
+
+        <ul>
+          <li><code>app.get/post/put/delete</code>: định nghĩa route.</li>
+          <li><code>app.use</code>: đăng ký middleware.</li>
+        </ul>
+
+        <p class="note">
+          <span class="hot-badge">Cốt lõi</span>
+          Làm backend Node là gần như ngày nào cũng đụng tới <strong>Express + routing + middleware</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Middleware -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill express">N9</div>
+        <h2>9. Middleware trong Express</h2>
+        <span class="freq high">RẤT HAY GẶP</span>
+      </div>
+      <span class="tag tag-node">Middleware</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>function logger(req, res, next) {
+  console.log(`${req.method} ${req.url}`);
+  next(); // cho request đi tiếp
+}
+
+app.use(logger);</code></pre>
+
+        <pre><code>// Middleware xử lý lỗi (đặt cuối cùng)
+function errorHandler(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).json({ message: "Lỗi server!" });
+}
+
+app.use(errorHandler);</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>const cors = require("cors");
+
+app.use(cors());         // bật CORS
+app.use(express.json()); // parse JSON body</code></pre>
+
+        <p class="note">
+          <span class="hot-badge">Rất hay gặp</span>
+          <code>express.json()</code>, <code>cors()</code>, logger, error handler là bộ 4 middleware cực cơ bản
+          trong mọi API.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. REST API CRUD -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill api">N10</div>
+        <h2>10. REST API CRUD với Express</h2>
+        <span class="freq high">CỰC KỲ QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-node">REST</span>
+    </div>
+
+    <p class="sub-title">Cú pháp &amp; Giải thích</p>
+    <pre><code>let todos = [
+  { id: 1, title: "Học NodeJS", done: false },
+];
+
+// GET /todos - lấy danh sách
+app.get("/api/todos", (req, res) =&gt; {
+  res.json(todos);
+});
+
+// POST /todos - tạo mới
+app.post("/api/todos", (req, res) =&gt; {
+  const { title } = req.body;
+  const newTodo = { id: Date.now(), title, done: false };
+  todos.push(newTodo);
+  res.status(201).json(newTodo);
+});</code></pre>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Update &amp; Delete</p>
+        <pre><code>// PUT /todos/:id - cập nhật
+app.put("/api/todos/:id", (req, res) =&gt; {
+  const id = Number(req.params.id);
+  const todo = todos.find((t) =&gt; t.id === id);
+  if (!todo) return res.status(404).json({ message: "Không tìm thấy" });
+
+  todo.title = req.body.title ?? todo.title;
+  todo.done = req.body.done ?? todo.done;
+
+  res.json(todo);
+});
+
+// DELETE /todos/:id - xóa
+app.delete("/api/todos/:id", (req, res) =&gt; {
+  const id = Number(req.params.id);
+  todos = todos.filter((t) =&gt; t.id !== id);
+  res.status(204).send();
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Kết quả &amp; Pattern</p>
+        <ul>
+          <li>4 method CRUD chuẩn: GET / POST / PUT / DELETE.</li>
+          <li>Dữ liệu demo đang lưu <strong>in-memory</strong>.</li>
+          <li>Thực tế sẽ thay bằng DB (Mongo, Postgres,...).</li>
+        </ul>
+
+        <p class="note">
+          <span class="hot-badge">Cực kỳ quan trọng</span>
+          Pattern REST API CRUD kiểu này lặp đi lặp lại trong mọi dự án backend (chỉ khác DB &amp; logic).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. MongoDB + Mongoose -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill db">N11</div>
+        <h2>11. Kết nối MongoDB với Mongoose</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">MongoDB</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install mongoose</code></pre>
+        <pre><code>const mongoose = require("mongoose");
+
+async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("✅ Kết nối MongoDB thành công");
+  } catch (err) {
+    console.error("❌ Lỗi kết nối MongoDB", err);
+    process.exit(1);
+  }
+}
+
+connectDB();</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>const todoSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  done: { type: Boolean, default: false },
+}, { timestamps: true });
+
+const Todo = mongoose.model("Todo", todoSchema);
+
+// GET dùng Mongoose
+app.get("/api/todos", async (req, res, next) =&gt; {
+  try {
+    const todos = await Todo.find();
+    res.json(todos);
+  } catch (err) {
+    next(err);
+  }
+});</code></pre>
+
+        <p class="note">
+          <span class="hot-badge">Hay gặp</span>
+          Stack phổ biến: <strong>Node + Express + MongoDB (MERN)</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. PostgreSQL + node-postgres -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill db">N12</div>
+        <h2>12. Kết nối PostgreSQL với node-postgres</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">PostgreSQL</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install pg</code></pre>
+        <pre><code>const { Pool } = require("pg");
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+async function getUsers() {
+  const result = await pool.query("SELECT id, name FROM users");
+  return result.rows;
+}</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>app.get("/api/users", async (req, res, next) =&gt; {
+  try {
+    const result = await pool.query("SELECT id, name FROM users");
+    res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+});</code></pre>
+
+        <p class="note">
+          <span class="hot-badge">Thực tế</span>
+          Dự án enterprise thường dùng DB quan hệ như <strong>PostgreSQL</strong> hoặc MySQL.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. Async / Await & Promise handling -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill core">N13</div>
+        <h2>13. Async / Await &amp; xử lý lỗi bất đồng bộ</h2>
+        <span class="freq high">RẤT QUAN TRỌNG</span>
+      </div>
+      <span class="tag tag-node">Async</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>function wait(ms) {
+  return new Promise((resolve) =&gt; {
+    setTimeout(() =&gt; resolve(`Đợi ${ms}ms xong`), ms);
+  });
+}
+
+wait(1000).then(console.log);</code></pre>
+
+        <pre><code>async function main() {
+  try {
+    const msg = await wait(1000);
+    console.log(msg);
+  } catch (err) {
+    console.error("Lỗi:", err);
+  }
+}</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Wrapper cho route Express</p>
+        <pre><code>function asyncHandler(fn) {
+  return (req, res, next) =&gt; {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+}
+
+app.get("/api/test", asyncHandler(async (req, res) =&gt; {
+  const data = await wait(500);
+  res.json({ data });
+}));</code></pre>
+
+        <p class="note">
+          <span class="hot-badge">Quan trọng</span>
+          Sai lầm hay gặp: quên <code>try/catch</code> trong async → lỗi không đi tới error middleware.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. Auth với JWT & bcrypt -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill auth">N14</div>
+        <h2>14. Authentication với JWT &amp; bcrypt</h2>
+        <span class="freq high">RẤT THƯỜNG DÙNG</span>
+      </div>
+      <span class="tag tag-node">Auth</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install jsonwebtoken bcrypt</code></pre>
+
+        <pre><code>const bcrypt = require("bcrypt");
+
+async function hashPassword(plain) {
+  const saltRounds = 10;
+  const hash = await bcrypt.hash(plain, saltRounds);
+  return hash;
+}</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>const jwt = require("jsonwebtoken");
+
+function signToken(user) {
+  return jwt.sign(
+    { id: user.id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "1d" }
+  );
+}
+
+// Middleware verify token
+function auth(req, res, next) {
+  const header = req.headers.authorization;
+  if (!header?.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Không có token" });
+  }
+
+  const token = header.split(" ")[1];
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = payload;
+    next();
+  } catch {
+    return res.status(401).json({ message: "Token không hợp lệ" });
+  }
+}</code></pre>
+
+        <p class="note">
+          <span class="hot-badge">Rất thường dùng</span>
+          Đa số API hiện đại dùng <strong>JWT + bcrypt</strong> cho login / protected route.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. Deploy, PM2 & cấu hình môi trường -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill deploy">N15</div>
+        <h2>15. Deploy NodeJS, PM2 &amp; môi trường</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">Deploy</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install -g pm2</code></pre>
+        <pre><code># Chạy app
+pm2 start index.js --name my-app
+
+# Xem list
+pm2 list
+
+# Xem log
+pm2 logs my-app
+
+# Lưu cấu hình
+pm2 save</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <ul>
+          <li>Dùng file .env cho dev / prod khác nhau.</li>
+          <li>Prod: Node + Nginx (reverse proxy) + PM2.</li>
+          <li>PaaS: Render, Railway, Heroku cũ, v.v.</li>
+        </ul>
+
+        <p class="note">
+          <span class="hot-badge">Thực tế</span>
+          Prod luôn cần: <strong>PM2 (hoặc tương tự) + log + env chuẩn</strong> để app chạy ổn định.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. CORS & security headers -->
+  <section class="section important-high">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill http">N16</div>
+        <h2>16. CORS &amp; Security headers (helmet)</h2>
+        <span class="freq high">RẤT HAY GẶP</span>
+      </div>
+      <span class="tag tag-node">Security</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install cors helmet</code></pre>
+        <pre><code>const cors = require("cors");
+const helmet = require("helmet");
+
+app.use(helmet()); // set nhiều HTTP header bảo mật
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <ul>
+          <li>Không còn lỗi <code>CORS</code> khi FE gọi API.</li>
+          <li>Helmet set sẵn header như <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code>...</li>
+        </ul>
+        <p class="note">
+          <span class="hot-badge">Security basic</span>
+          Bật CORS/helmet là việc phải làm khi API public ra internet.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17. Multer upload file -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill fs">N17</div>
+        <h2>17. Upload file với Multer</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">Upload</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install multer</code></pre>
+        <pre><code>const multer = require("multer");
+
+const upload = multer({ dest: "uploads/" });
+
+// Single file &lt;input name="avatar" type="file" /&gt;
+app.post("/upload", upload.single("avatar"), (req, res) =&gt; {
+  console.log(req.file);
+  res.json({ file: req.file });
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <ul>
+          <li>Gửi form-data từ FE → file được lưu trong folder <code>uploads/</code>.</li>
+          <li><code>req.file</code> chứa info: filename, mimetype, size...</li>
+        </ul>
+        <p class="note">
+          Có thể custom storage, filter mimetype, limit size upload để an toàn hơn.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18. Validation Joi/Zod -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill api">N18</div>
+        <h2>18. Validate body với Joi / Zod</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">Validation</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install joi</code></pre>
+        <pre><code>const Joi = require("joi");
+
+const userSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>app.post("/api/login", (req, res, next) =&gt; {
+  const { error, value } = userSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.message });
+  }
+  // value: body đã validate
+  res.json({ ok: true });
+});</code></pre>
+        <p class="note">
+          Tách validate ra middleware riêng sẽ sạch code hơn.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 19. Logging (morgan, winston) -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill tools">N19</div>
+        <h2>19. Logging với Morgan &amp; Winston</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">Logging</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install morgan winston</code></pre>
+        <pre><code>const morgan = require("morgan");
+app.use(morgan("dev")); // log request ngắn gọn</code></pre>
+
+        <pre><code>const winston = require("winston");
+
+const logger = winston.createLogger({
+  level: "info",
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "app.log" }),
+  ],
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>logger.info("Server started on port 3000");
+logger.error("Có lỗi rồi!", { error });</code></pre>
+        <p class="note">
+          Prod nên log ra file + console, sau đó ship sang hệ thống log tập trung (ELK, Loki...).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20. Rate limit -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill http">N20</div>
+        <h2>20. Chống spam API với rate limit</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">Security</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install express-rate-limit</code></pre>
+        <pre><code>const rateLimit = require("express-rate-limit");
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 phút
+  max: 100,                 // tối đa 100 request / IP
+});
+
+app.use("/api", apiLimiter);</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <ul>
+          <li>Nếu 1 IP spam >100 request / 15 phút → trả về 429.</li>
+          <li>Bảo vệ API khỏi DDOS nhẹ / script bắn liên tục.</li>
+        </ul>
+        <p class="note">
+          Có thể custom message, phân nhóm limiter cho route login riêng.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 21. Pagination & filter -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill api">N21</div>
+        <h2>21. Pagination &amp; Filtering cơ bản</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">REST</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>// GET /api/users?page=1&amp;limit=10
+app.get("/api/users", async (req, res, next) =&gt; {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const [items, total] = await Promise.all([
+    User.find().skip(skip).limit(limit),
+    User.countDocuments(),
+  ]);
+
+  res.json({
+    data: items,
+    page,
+    total,
+    totalPages: Math.ceil(total / limit),
+  });
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <ul>
+          <li>FE truyền <code>?page=2&amp;limit=20</code> để lấy trang 2.</li>
+          <li>API trả kèm <code>totalPages</code> để FE vẽ phân trang.</li>
+        </ul>
+        <p class="note">
+          Có thể thêm filter (search, sort) vào query string.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 22. Streams -->
+  <section class="section important-low">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill fs">N22</div>
+        <h2>22. Streams – đọc/ghi file lớn hiệu quả</h2>
+        <span class="freq low">ÍT GẶP CHO BEGINNER</span>
+      </div>
+      <span class="tag tag-node">Stream</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>const fs = require("fs");
+
+const readStream = fs.createReadStream("input.txt");
+const writeStream = fs.createWriteStream("output.txt");
+
+readStream.pipe(writeStream);</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <ul>
+          <li>Dùng stream để xử lý file lớn (video, log...).</li>
+          <li>Không phải load cả file vào RAM 1 lần → đỡ tốn bộ nhớ.</li>
+        </ul>
+        <p class="note">
+          Hay dùng khi build server file download / upload nhiều GB.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 23. EventEmitter -->
+  <section class="section important-low">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill core">N23</div>
+        <h2>23. EventEmitter – custom event trong Node</h2>
+        <span class="freq low">ÍT GẶP</span>
+      </div>
+      <span class="tag tag-node">Core</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>const EventEmitter = require("events");
+const emitter = new EventEmitter();
+
+emitter.on("user:created", (user) =&gt; {
+  console.log("User mới:", user.email);
+});
+
+emitter.emit("user:created", { email: "test@example.com" });</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <ul>
+          <li>Pattern pub/sub nội bộ app.</li>
+          <li>Ví dụ: sau khi tạo user, bắn event để gửi email welcome.</li>
+        </ul>
+        <p class="note">
+          Khi hệ thống lớn hơn sẽ chuyển qua message broker (RabbitMQ, Kafka...).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 24. node-cron -->
+  <section class="section important-low">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill tools">N24</div>
+        <h2>24. Cron job với node-cron</h2>
+        <span class="freq low">ÍT GẶP</span>
+      </div>
+      <span class="tag tag-node">Schedule</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install node-cron</code></pre>
+        <pre><code>const cron = require("node-cron");
+
+// Chạy mỗi phút
+cron.schedule("* * * * *", () =&gt; {
+  console.log("Chạy job mỗi phút:", new Date().toISOString());
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <ul>
+          <li>Cron để dọn log, gửi email báo cáo hàng ngày, backup DB...</li>
+        </ul>
+        <p class="note">
+          Prod lớn thường dùng scheduler riêng (Cloud Scheduler, crontab server...).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 25. Redis -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill db">N25</div>
+        <h2>25. Cache với Redis</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">Cache</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install ioredis</code></pre>
+        <pre><code>const Redis = require("ioredis");
+const redis = new Redis(process.env.REDIS_URL);</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>app.get("/api/products", async (req, res, next) =&gt; {
+  const cacheKey = "products:all";
+  const cached = await redis.get(cacheKey);
+  if (cached) return res.json(JSON.parse(cached));
+
+  const products = await Product.find();
+  await redis.set(cacheKey, JSON.stringify(products), "EX", 60); // cache 60s
+  res.json(products);
+});</code></pre>
+        <p class="note">
+          Cache hợp lý giúp API nhanh hơn rất nhiều, giảm tải DB.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 26. Socket.io -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill http">N26</div>
+        <h2>26. Realtime với Socket.io</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">Realtime</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install socket.io</code></pre>
+        <pre><code>const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server, { cors: { origin: "*" } });
+
+io.on("connection", (socket) =&gt; {
+  console.log("client connected", socket.id);
+  socket.on("chat:msg", (msg) =&gt; {
+    io.emit("chat:msg", msg);
+  });
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <ul>
+          <li>FE connect qua socket.io → chat realtime.</li>
+          <li>Thường dùng cho chat, notification, realtime dashboard.</li>
+        </ul>
+        <p class="note">
+          Nên nghĩ tới scale (Redis adapter) khi nhiều instance server.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 27. Nodemailer -->
+  <section class="section important-low">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill tools">N27</div>
+        <h2>27. Gửi email với Nodemailer</h2>
+        <span class="freq low">ÍT GẶP</span>
+      </div>
+      <span class="tag tag-node">Email</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install nodemailer</code></pre>
+        <pre><code>const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+});</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ dùng &amp; Kết quả</p>
+        <pre><code>async function sendWelcome(email) {
+  await transporter.sendMail({
+    from: '"My App" &lt;no-reply@myapp.com&gt;',
+    to: email,
+    subject: "Welcome!",
+    text: "Chào mừng bạn đến với My App",
+  });
+}</code></pre>
+        <p class="note">
+          Thực tế hay dùng service chuyên mail (SendGrid, Mailgun...) để tránh bị vào spam.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 28. Cấu trúc folder -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill core">N28</div>
+        <h2>28. Cấu trúc folder NodeJS chuẩn</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">Architecture</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Ví dụ cấu trúc</p>
+        <pre><code>src/
+  config/
+  routes/
+  controllers/
+  models/
+  middlewares/
+  utils/
+  index.js</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Giải thích</p>
+        <ul>
+          <li><code>routes/</code>: định nghĩa URL &amp; map controller.</li>
+          <li><code>controllers/</code>: nhận req, gọi service/model.</li>
+          <li><code>models/</code>: schema DB (Mongoose, Prisma...).</li>
+          <li><code>middlewares/</code>: auth, validate, error handler...</li>
+        </ul>
+        <p class="note">
+          Kiểu tách này giúp project scale lớn mà vẫn dễ maintain.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 29. Docker -->
+  <section class="section important-low">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill deploy">N29</div>
+        <h2>29. Đóng gói Node app với Docker</h2>
+        <span class="freq low">ÍT GẶP CHO NEWBIE</span>
+      </div>
+      <span class="tag tag-node">DevOps</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Dockerfile cơ bản</p>
+        <pre><code>FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install --production
+
+COPY . .
+
+CMD ["node", "index.js"]</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Build &amp; chạy</p>
+        <pre><code># Build image
+docker build -t my-node-app .
+
+# Run container
+docker run -p 3000:3000 my-node-app</code></pre>
+        <p class="note">
+          Dùng Docker giúp chạy app consistent giữa dev, staging, prod.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 30. Testing với Jest / Supertest -->
+  <section class="section important-mid">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill tools">N30</div>
+        <h2>30. Viết test API với Jest &amp; Supertest</h2>
+        <span class="freq mid">TRUNG BÌNH</span>
+      </div>
+      <span class="tag tag-node">Testing</span>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <p class="sub-title">Cú pháp &amp; Giải thích</p>
+        <pre><code>npm install --save-dev jest supertest</code></pre>
+        <pre><code>// app.test.js
+const request = require("supertest");
+const app = require("./app"); // export express app</code></pre>
+      </div>
+      <div>
+        <p class="sub-title">Ví dụ test &amp; Kết quả</p>
+        <pre><code>test("GET /api/health trả 200", async () =&gt; {
+  const res = await request(app).get("/api/health");
+  expect(res.statusCode).toBe(200);
+  expect(res.body.ok).toBe(true);
+});</code></pre>
+        <p class="note">
+          Thêm test giúp tự tin refactor API, tránh bug ngớ ngẩn.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      const input = document.querySelector('.search-input');
+      const btn = document.querySelector('.search-btn');
+      const resultsEl = document.querySelector('.search-results');
+
+      if (!input || !btn || !resultsEl) return;
+
+      const sectionEls = Array.from(document.querySelectorAll('section.section'));
+      const data = sectionEls.map((sec, idx) => {
+        let id = sec.id;
+        if (!id) {
+          id = 'sec-' + (idx + 1);
+          sec.id = id;
+        }
+        const titleEl = sec.querySelector('h2');
+        const title = titleEl ? titleEl.textContent.trim() : 'Mục ' + (idx + 1);
+        const text = sec.textContent.toLowerCase();
+        return { id, title, text, element: sec };
+      });
+
+      let currentResults = [];
+      let activeIndex = -1;
+
+      function clearHighlight() {
+        document.querySelectorAll('.search-hit').forEach(el => {
+          el.classList.remove('search-hit');
+        });
+      }
+
+      function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, c => {
+          const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+          };
+          return map[c] || c;
+        });
+      }
+
+      // Active tab theo file hiện tại
+      const current = location.pathname.split("/").pop() || "Html.html";
+      const map = {
+        "Html.html": "tab-html",
+        "Css.html": "tab-css",
+        "Jquery.html": "tab-jquery",
+        "Js.html": "tab-js",
+        "NodeJs.html": "tab-node",
+        "ReacjsTailwind.html": "tab-react"
+      };
+
+      const activeId = map[current];
+      if (activeId) {
+        const el = document.getElementById(activeId);
+        if (el) el.classList.add("active");
+      }
+
+      function makeSnippet(fullText, query) {
+        const lower = fullText.toLowerCase();
+        const q = query.toLowerCase();
+        const idx = lower.indexOf(q);
+        if (idx === -1) return '';
+        const radius = 40;
+        let start = Math.max(0, idx - radius);
+        let end = Math.min(fullText.length, idx + q.length + radius);
+        let snippet = fullText.slice(start, end).replace(/\s+/g, ' ');
+        if (start > 0) snippet = '...' + snippet;
+        if (end < fullText.length) snippet = snippet + '...';
+        return snippet;
+      }
+
+      function renderResults(query) {
+        resultsEl.innerHTML = '';
+        activeIndex = -1;
+
+        if (!query) {
+          return;
+        }
+
+        const q = query.toLowerCase();
+        currentResults = data.filter(sec => sec.text.includes(q));
+
+        if (currentResults.length === 0) {
+          resultsEl.innerHTML =
+            '<li class="search-result-empty">Không tìm thấy kết quả cho: <strong>' +
+            escapeHtml(query) +
+            '</strong></li>';
+          return;
+        }
+
+        const itemsHtml = currentResults.map((sec, idx) => {
+          const snippet = makeSnippet(sec.text, q);
+          return `
+<li class="search-result-item" data-index="${idx}">
+  <div class="search-result-icon">⌕</div>
+  <div class="search-result-content">
+      <div class="search-result-title">${escapeHtml(sec.title)}</div>
+      <div class="search-result-snippet">${escapeHtml(snippet)}</div>
+  </div>
+</li>`;
+        }).join('');
+
+        resultsEl.innerHTML = itemsHtml;
+      }
+
+      function scrollToResult(index) {
+        const item = currentResults[index];
+        if (!item) return;
+        clearHighlight();
+        item.element.classList.add('search-hit');
+        item.element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        resultsEl.innerHTML = '';
+      }
+
+      function doSearch() {
+        const q = input.value.trim();
+        if (!q) {
+          resultsEl.innerHTML = '';
+          currentResults = [];
+          activeIndex = -1;
+          clearHighlight();
+          return;
+        }
+        renderResults(q);
+      }
+
+      function updateActiveItem() {
+        const items = Array.from(resultsEl.querySelectorAll('.search-result-item'));
+        items.forEach((li, idx) => {
+          li.classList.toggle('is-active', idx === activeIndex);
+        });
+      }
+
+      btn.addEventListener('click', doSearch);
+
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          if (currentResults.length > 0 && activeIndex >= 0) {
+            e.preventDefault();
+            scrollToResult(activeIndex);
+          } else {
+            e.preventDefault();
+            doSearch();
+            if (currentResults.length === 1) {
+              scrollToResult(0);
+            }
+          }
+        } else if (e.key === 'ArrowDown') {
+          if (!currentResults.length) return;
+          e.preventDefault();
+          activeIndex = (activeIndex + 1) % currentResults.length;
+          updateActiveItem();
+        } else if (e.key === 'ArrowUp') {
+          if (!currentResults.length) return;
+          e.preventDefault();
+          activeIndex = (activeIndex - 1 + currentResults.length) % currentResults.length;
+          updateActiveItem();
+        }
+      });
+
+      resultsEl.addEventListener('click', function (e) {
+        const item = e.target.closest('.search-result-item');
+        if (!item) return;
+        const index = Number(item.dataset.index);
+        scrollToResult(index);
+      });
+
+      document.addEventListener('click', function (e) {
+        const wrapper = document.querySelector('.search-wrapper');
+        if (!wrapper.contains(e.target)) {
+          resultsEl.innerHTML = '';
+          currentResults = [];
+          activeIndex = -1;
+        }
+      });
+
+      /* ===== BỘ LỌC ĐỘ QUAN TRỌNG ===== */
+      const filterButtons = document.querySelectorAll('.filter-btn');
+
+      function applyFilter(level) {
+        sectionEls.forEach(sec => {
+          if (level === 'all') {
+            sec.style.display = '';
+            return;
+          }
+          const className = 'important-' + level;
+          if (sec.classList.contains(className)) {
+            sec.style.display = '';
+          } else {
+            sec.style.display = 'none';
+          }
+        });
+      }
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const level = btn.dataset.level;
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          applyFilter(level);
+        });
+      });
+    })();
+  </script>
+
+</body>
+
+</html>

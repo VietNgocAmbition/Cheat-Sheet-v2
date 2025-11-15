@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>jQuery Cheat Sheet</title>
+  <link rel="icon" type="image/png" href="logo2.png">
+
+  <style>
+    :root {
+      --bg-main: #020617;
+      --bg-card: #020617;
+      --bg-soft: #0b1120;
+      --accent-pink: #f472b6;
+      --accent-blue: #38bdf8;
+      --accent-green: #4ade80;
+      --accent-yellow: #eab308;
+      --accent-purple: #a855f7;
+      --accent-red: #fb7185;
+      --accent-orange: #fb923c;
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --code-bg: #020617;
+      --border-soft: rgba(148, 163, 184, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* ===== MENU 6 FILE – STYLE GIỐNG TABS ===== */
+    .top-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      backdrop-filter: none;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+
+    .top-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      font-size: 0.86rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition:
+        background 0.15s,
+        color 0.15s,
+        border-color 0.15s,
+        transform 0.1s,
+        box-shadow 0.15s;
+    }
+
+    .top-tab-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-blue);
+    }
+
+    .top-tab-btn:hover {
+      color: #e5e7eb;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .top-tab-btn.active {
+      color: #0b1120;
+      border-color: var(--accent-blue);
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
+      box-shadow: 0 10px 22px rgba(56, 189, 248, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .top-tab-btn.active .top-tab-dot {
+      background: #0b1120;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.7;
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px 40px;
+      background: radial-gradient(circle at top left, #1e293b 0, #020617 60%);
+      color: var(--text-main);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #f9fafb;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-soft);
+      margin-bottom: 10px;
+      font-size: 0.96rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(236, 72, 153, 0.18));
+      margin-bottom: 10px;
+    }
+
+    .badge span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent-green);
+    }
+
+    .section {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.9);
+    }
+
+    .sec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .sec-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .pill {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #020617;
+    }
+
+    .pill.basic {
+      background: var(--accent-blue);
+    }
+
+    .pill.var {
+      background: var(--accent-orange);
+    }
+
+    .pill.type {
+      background: var(--accent-green);
+    }
+
+    .pill.op {
+      background: var(--accent-yellow);
+    }
+
+    .pill.if {
+      background: var(--accent-pink);
+    }
+
+    .pill.loop {
+      background: #22d3ee;
+    }
+
+    .pill.func {
+      background: #a855f7;
+    }
+
+    .pill.arr {
+      background: #4ade80;
+    }
+
+    .pill.obj {
+      background: #fb923c;
+    }
+
+    .pill.dom {
+      background: #38bdf8;
+    }
+
+    .pill.event {
+      background: #facc15;
+    }
+
+    .pill.store {
+      background: #22c55e;
+    }
+
+    .pill.async {
+      background: #fb7185;
+    }
+
+    .pill.error {
+      background: #f97316;
+    }
+
+    /* Thêm pill jQuery */
+    .pill.jq {
+      background: var(--accent-purple);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-soft);
+    }
+
+    .tag-js {
+      border-color: rgba(248, 250, 252, 0.7);
+      color: #e5e7eb;
+    }
+
+    .tag-hot {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+      background: rgba(248, 113, 113, 0.08);
+    }
+
+    p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+
+    ul,
+    ol {
+      margin: 6px 0 8px 18px;
+      font-size: 0.94rem;
+    }
+
+    li+li {
+      margin-top: 3px;
+    }
+
+    code {
+      background-color: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.86rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      overflow-x: auto;
+      font-size: 0.86rem;
+      margin: 8px 0;
+    }
+
+    pre code {
+      border: none;
+      padding: 0;
+      background: transparent;
+    }
+
+    .sub-title {
+      font-weight: 600;
+      color: var(--accent-blue);
+      margin-top: 4px;
+      margin-bottom: 4px;
+      font-size: 0.94rem;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      background-color: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      margin-right: 6px;
+      margin-top: 4px;
+    }
+
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent-blue);
+    }
+
+    .chip.green .chip-dot {
+      background: var(--accent-green);
+    }
+
+    .chip.pink .chip-dot {
+      background: var(--accent-pink);
+    }
+
+    .chip.yellow .chip-dot {
+      background: var(--accent-yellow);
+    }
+
+    .chip.red .chip-dot {
+      background: var(--accent-red);
+    }
+
+    .important {
+      border-left: 3px solid var(--accent-yellow);
+      padding-left: 10px;
+      margin-top: 8px;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .hot-alert {
+      border-left: 3px solid rgba(248, 113, 113, 0.95);
+      background: rgba(248, 113, 113, 0.06);
+      padding: 6px 10px;
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 0.88rem;
+      color: #fecaca;
+    }
+
+    .example-block {
+      margin-top: 8px;
+      margin-bottom: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      padding: 10px 10px 8px;
+    }
+
+    .example-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .example-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .example-col-label {
+      font-size: 0.8rem;
+      color: var(--accent-blue);
+      margin-bottom: 2px;
+    }
+
+    .example-output {
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      font-family: "JetBrains Mono", Consolas, monospace;
+      font-size: 0.84rem;
+      white-space: pre-wrap;
+    }
+
+    .example-output-label {
+      font-size: 0.78rem;
+      color: var(--accent-green);
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0 12px 28px;
+      }
+    }
+
+    /* ===== Khung tìm kiếm dùng chung ===== */
+    .search-wrapper {
+      position: sticky;
+      top: 50px;
+      z-index: 40;
+      max-width: 680px;
+      margin: 12px auto 18px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: linear-gradient(135deg,
+          rgba(15, 23, 42, 0.95),
+          rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.85);
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      padding: 6px 8px 6px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+
+    .search-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent-blue);
+    }
+
+    .search-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      padding: 4px 8px;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-soft);
+      opacity: 0.8;
+    }
+
+    .search-btn {
+      flex-shrink: 0;
+      border: none;
+      outline: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: linear-gradient(135deg,
+          var(--accent-blue),
+          var(--accent-pink));
+      color: #0b1120;
+      box-shadow: 0 6px 16px rgba(56, 189, 248, 0.45);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 9px 22px rgba(56, 189, 248, 0.55);
+      filter: brightness(1.05);
+    }
+
+    .search-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.8);
+    }
+
+    .search-hint {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    .search-results {
+      margin-top: 6px;
+      padding: 4px 0;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      list-style: none;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .search-results:empty {
+      display: none;
+    }
+
+    .search-result-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+
+    .search-result-item:hover,
+    .search-result-item.is-active {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .search-result-icon {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--text-soft);
+      font-size: 0.65rem;
+    }
+
+    .search-result-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-result-title {
+      color: var(--text-main);
+      font-weight: 500;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .search-result-snippet {
+      color: var(--text-soft);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .search-result-empty {
+      padding: 6px 10px;
+      font-size: 0.86rem;
+      color: var(--text-soft);
+    }
+
+    .search-hit {
+      outline: 2px solid var(--accent-blue);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4);
+      border-radius: 10px;
+      animation: searchBlink 1s ease-out 0s 1;
+    }
+
+    @keyframes searchBlink {
+      0% {
+        background-color: rgba(56, 189, 248, 0.22);
+      }
+
+      100% {
+        background-color: transparent;
+      }
+    }
+
+    .author-links {
+      margin-bottom: 26px;
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .author-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text-main);
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .author-item:hover {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .github-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--accent-blue);
+    }
+
+    .money-icon {
+      width: 20px;
+      height: 20px;
+      color: #0b1120;
+    }
+
+    .donate-box {
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+      color: #0b1120;
+      border-color: transparent;
+      box-shadow: 0 0 20px rgba(244, 114, 182, 0.35);
+    }
+
+    /* ===== Style cho link Nguồn (trong subtitle) ===== */
+    .subtitle a {
+      color: var(--text-main);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .subtitle a:hover {
+      color: var(--accent-blue);
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>JQUERY Cheat Sheet</h1>
+  <p class="subtitle">
+    Tham khảo <a href="https://htmlcheatsheet.com/jquery/"><i>Nguồn</i></a>
+  </p>
+  <p class="subtitle">- Ikigai, Kaizen, Shu-Ha-Ri -</p>
+
+  <div class="author-links">
+    <a href="https://github.com/VietNgocAmbition" target="_blank" class="author-item">
+      <svg class="github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path
+          d="M9 19c-4.3 1-4.3-2.5-6-3m12 5v-3.5c0-.9.1-1.3-.5-2 
+               2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 
+               4.2 4.2 0 0 0-.1-3.2s-1-.3-3.3 1.2a11.3 11.3 0 0 0-6 0C7 2.8 6 3 6 3 
+               a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.6 9.4c0 4.5 2.7 5.7 5.5 6 
+               -.3.4-.6 1.1-.7 2V21" />
+      </svg>
+      <span>GitHub: VietNgocAmbition</span>
+    </a>
+
+    <div class="author-item donate-box">
+      <svg class="money-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+        stroke-linejoin="round">
+        <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M2 10c2 0 3-2 3-2m17 2c-2 0-3-2-3-2m-14 6c2 0 3 2 3 2m14-2c-2 0-3 2-3 2"></path>
+      </svg>
+      <span>Donate: TPBank - 26304032004</span>
+    </div>
+  </div>
+
+  <nav class="top-tabs">
+    <a href="Html.html" class="top-tab-btn" id="tab-html">
+      <span class="top-tab-dot"></span>
+      HTML
+    </a>
+    <a href="Css.html" class="top-tab-btn" id="tab-css">
+      <span class="top-tab-dot"></span>
+      CSS
+    </a>
+    <a href="Jquery.html" class="top-tab-btn" id="tab-jquery">
+      <span class="top-tab-dot"></span>
+      jQuery
+    </a>
+    <a href="Js.html" class="top-tab-btn" id="tab-js">
+      <span class="top-tab-dot"></span>
+      JavaScript
+    </a>
+    <a href="ReacjsTailwind.html" class="top-tab-btn" id="tab-react">
+      <span class="top-tab-dot"></span>
+      ReactJS & Tailwind & Redux Toolkit
+    </a>
+    <a href="NodeJs.html" class="top-tab-btn" id="tab-node">
+      <span class="top-tab-dot"></span>
+      NodeJS
+    </a>
+    <a href="#" class="top-tab-btn" id="tab-ts">
+      <span class="top-tab-dot"></span>
+      Typescript ( Đang học)
+    </a>
+  </nav>
+
+  <!-- Khung tìm kiếm + dropdown kết quả -->
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <span class="search-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M10.5 4a6.5 6.5 0 0 1 5.11 10.57l3.91 3.91a1 1 0 0 1-1.42 1.42l-3.91-3.91A6.5 6.5 0 1 1 10.5 4zm0 2a4.5 4.5 0 1 0 0 9a4.5 4.5 0 0 0 0-9z" />
+        </svg>
+      </span>
+      <input type="text" class="search-input" placeholder="Tìm nhanh: $('#id'), .on('click'), ajax, fadeIn...">
+      <button class="search-btn" type="button">
+        Tìm kiếm
+      </button>
+    </div>
+    <p class="search-hint">
+      Gõ từ khóa rồi nhấn <strong>Enter</strong> hoặc nút <strong>Tìm kiếm</strong>
+    </p>
+    <ul class="search-results"></ul>
+  </div>
+
+  <div class="badge"><span></span> jQuery</div>
+
+  <!-- ===== CÁC SECTION (giữ nguyên như anh gửi) ===== -->
+  <!-- 1. Giới thiệu & cách nhúng -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill jq">JQ</div>
+        <h2>1. jQuery là gì & cách nhúng</h2>
+      </div>
+      <span class="tag tag-js">Intro</span>
+    </div>
+
+    <p>jQuery là thư viện JavaScript giúp thao tác DOM, event, AJAX, hiệu ứng... nhanh hơn với cú pháp ngắn gọn.</p>
+
+    <p class="sub-title">1.1 Nhúng jQuery từ CDN (cách phổ biến)</p>
+    <div class="example-block">
+      <div class="example-title">Cú pháp + Ví dụ</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML nối file jQuery:</div>
+          <pre><code>&lt;!-- đặt trước &lt;/body&gt; --&gt;
+&lt;script src="https://code.jquery.com/jquery-3.7.1.min.js"&gt;&lt;/script&gt;
+&lt;script src="app.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">Trong app.js:</div>
+          <pre><code>$(function () {
+  console.log("jQuery ready!");
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Console:
+jQuery ready!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">💡 Thực tế: luôn nhúng jQuery <strong>trước</strong> các file dùng tới <code>$</code> để tránh lỗi
+      <code>$ is not defined</code>.</p>
+  </section>
+
+  <!-- 2. Document ready -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill jq">R</div>
+        <h2>2. Document ready – chờ DOM load xong</h2>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Cực hay dùng</span>
+    </div>
+
+    <p>Đảm bảo code chạy sau khi DOM đã sẵn sàng (tương tự <code>DOMContentLoaded</code> trong JS thuần).</p>
+
+    <div class="example-block">
+      <div class="example-title">3 cách viết document ready</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">Cách 1:</div>
+          <pre><code>$(document).ready(function () {
+  console.log("Ready 1");
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">Cách 2 (ngắn hơn):</div>
+          <pre><code>$(function () {
+  console.log("Ready 2");
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Khi trang load xong:
+Console:
+Ready 1
+Ready 2
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Thói quen tốt: mọi code jQuery (selector, event, DOM...) nên đặt trong <code>$(function () { ... })</code>.
+    </div>
+  </section>
+
+  <!-- 3. Selectors -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill jq">S</div>
+        <h2>3. Selectors – chọn phần tử với jQuery</h2>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Dùng suốt</span>
+    </div>
+
+    <p>jQuery dùng cú pháp giống CSS selector: <code>$('selector')</code>.</p>
+
+    <div class="chip pink"><span class="chip-dot"></span>ID: <code>$('#id')</code></div>
+    <div class="chip green"><span class="chip-dot"></span>Class: <code>$('.class')</code></div>
+    <div class="chip yellow"><span class="chip-dot"></span>Tag: <code>$('div')</code></div>
+    <div class="chip red"><span class="chip-dot"></span>Attribute: <code>$('[name=email]')</code></div>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ selector cơ bản</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;h1 id="title"&gt;Tiêu đề&lt;/h1&gt;
+&lt;p class="desc"&gt;Mô tả&lt;/p&gt;
+&lt;button data-role="action"&gt;Click&lt;/button&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>const $title = $("#title");
+const $desc = $(".desc");
+const $btn = $("button[data-role='action']");
+
+console.log($title.text());
+console.log($desc.length);
+console.log($btn.is("button"));</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+"Tiêu đề"
+1
+true
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">3.1 Pseudo & filter selector</p>
+    <div class="example-block">
+      <div class="example-title">Một số selector hay dùng</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>// chọn input đầu tiên
+$("input:first")
+
+// chọn hàng lẻ, hàng chẵn
+$("li:odd")  // index 1, 3, 5...
+$("li:even") // index 0, 2, 4...
+
+// chọn phần tử đang active/checked
+$("input:checked")
+$("option:selected")</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ghi nhớ:</div>
+          <div class="example-output">
+Selector của jQuery = CSS selector + thêm
+một số pseudo riêng như :first, :last,
+:odd, :even, :animated...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Selector tốt = code gọn. jQuery mạnh ở chỗ chọn được rất "deep" chỉ với một dòng.
+    </div>
+  </section>
+
+  <!-- 4. DOM Manipulation -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill jq">D</div>
+        <h2>4. DOM – text(), html(), css(), addClass()</h2>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Thao tác UI</span>
+    </div>
+
+    <p>Các hàm DOM cơ bản dùng liên tục:</p>
+    <div class="chip pink"><span class="chip-dot"></span><code>.text()</code></div>
+    <div class="chip green"><span class="chip-dot"></span><code>.html()</code></div>
+    <div class="chip yellow"><span class="chip-dot"></span><code>.val()</code></div>
+    <div class="chip red"><span class="chip-dot"></span><code>.css()</code></div>
+    <div class="chip"><span class="chip-dot"></span><code>.addClass()</code> / <code>.removeClass()</code></div>
+
+    <div class="example-block">
+      <div class="example-title">Thay text, HTML & value</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;h2 id="title"&gt;Tiêu đề cũ&lt;/h2&gt;
+&lt;input id="name-input" value="Ngọc"&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>$("#title").text("Tiêu đề mới");
+$("#title").html("&lt;i&gt;Tiêu đề&lt;/i&gt;");
+$("#name-input").val("Viet Ngoc");</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+H2 hiển thị: <i>Tiêu đề</i>
+Input có value: "Viet Ngoc"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">4.1 Thêm / xóa class + CSS inline</p>
+    <div class="example-block">
+      <div class="example-title">addClass, removeClass, css</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const $box = $("#box");
+
+$box.addClass("active");
+$box.removeClass("hidden");
+$box.toggleClass("highlight");
+
+$box.css({
+  color: "white",
+  backgroundColor: "#0f172a"
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ghi nhớ:</div>
+          <div class="example-output">
+.addClass / .removeClass / .toggleClass
+được dùng cực nhiều khi show/hide UI,
+đổi trạng thái button, tab, modal...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Kĩ năng core: kết hợp selector + DOM + class = nhiều hiệu ứng UI mà không cần viết JS thuần quá dài.
+    </div>
+  </section>
+
+  <!-- 5. Events -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill event">Ev</div>
+        <h2>5. Events – click, keyup, submit...</h2>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Tương tác người dùng</span>
+    </div>
+
+    <p>Cú pháp chuẩn: <code>$(selector).on('event', handler)</code></p>
+
+    <p class="sub-title">5.1 click, keyup, change</p>
+    <div class="example-block">
+      <div class="example-title">Ví dụ cơ bản</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;button id="btn"&gt;Bấm tui&lt;/button&gt;
+&lt;input id="search"&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>$("#btn").on("click", function () {
+  console.log("Đã bấm nút");
+});
+
+$("#search").on("keyup", function () {
+  console.log("Bạn đang gõ:", $(this).val());
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Bấm nút: Console "Đã bấm nút"
+Gõ vào input: Console "Bạn đang gõ: ..."
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">5.2 submit form + preventDefault</p>
+    <div class="example-block">
+      <div class="example-title">Chặn reload & đọc value</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;form id="login-form"&gt;
+  &lt;input id="user"&gt;
+  &lt;button type="submit"&gt;Login&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>$("#login-form").on("submit", function (e) {
+  e.preventDefault();
+  const username = $("#user").val();
+  console.log("User:", username);
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Nhấn Login:
+Không reload trang,
+Console: "User: [giá trị nhập]"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">5.3 Event delegation (phần tử tạo động)</p>
+    <div class="example-block">
+      <div class="example-title">.on() với selector con</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>// lắng nghe click trên các .item
+// kể cả tạo ra sau này
+$(document).on("click", ".item", function () {
+  console.log("Item được bấm:", $(this).text());
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ghi nhớ:</div>
+          <div class="example-output">
+Dùng delegation khi list được render
+dynamically (append từ JS, AJAX, template...).
+Nếu bind trực tiếp, item mới sẽ không có event.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Effects & animation -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill async">Fx</div>
+        <h2>6. Effects – hide, show, fade, slide, animate</h2>
+      </div>
+      <span class="tag tag-js">UI Effects</span>
+    </div>
+
+    <p>Một số hiệu ứng built-in rất nhanh:</p>
+    <div class="chip pink"><span class="chip-dot"></span><code>.hide()</code> / <code>.show()</code></div>
+    <div class="chip green"><span class="chip-dot"></span><code>.fadeIn()</code> / <code>.fadeOut()</code></div>
+    <div class="chip yellow"><span class="chip-dot"></span><code>.slideUp()</code> / <code>.slideDown()</code></div>
+    <div class="chip red"><span class="chip-dot"></span><code>.animate()</code></div>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ toggle với fade</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;button id="toggle"&gt;Toggle box&lt;/button&gt;
+&lt;div id="box"&gt;Nội dung&lt;/div&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>$("#toggle").on("click", function () {
+  $("#box").fadeToggle(300);
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Bấm button:
+Box mờ dần ẩn/hiện với thời gian 300ms.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">6.1 animate custom</p>
+    <div class="example-block">
+      <div class="example-title">Di chuyển box</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>$("#box").animate(
+  { left: "200px", opacity: 0.5 },
+  500
+);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ghi nhớ:</div>
+          <div class="example-output">
+.animate() thao tác trên thuộc tính
+CSS có giá trị số (top, left, width, height,
+opacity...). Còn lại nên dùng CSS + transition.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Traversing -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill obj">Tr</div>
+        <h2>7. Traversing – parent(), children(), find()</h2>
+      </div>
+      <span class="tag tag-js">DOM Tree</span>
+    </div>
+
+    <p>Duyệt lên/xuống trong DOM tree rất tiện:</p>
+
+    <div class="chip pink"><span class="chip-dot"></span><code>.parent()</code></div>
+    <div class="chip green"><span class="chip-dot"></span><code>.children()</code></div>
+    <div class="chip yellow"><span class="chip-dot"></span><code>.find()</code></div>
+    <div class="chip red"><span class="chip-dot"></span><code>.closest()</code></div>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ quản lý todo list</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;ul id="todo-list"&gt;
+  &lt;li class="item"&gt;
+    &lt;span class="text"&gt;Học jQuery&lt;/span&gt;
+    &lt;button class="delete"&gt;X&lt;/button&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>$("#todo-list").on("click", ".delete", function () {
+  $(this).closest(".item").remove();
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Bấm nút X:
+Li tương ứng bị remove khỏi DOM
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. AJAX -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill async">AJ</div>
+        <h2>8. AJAX – $.get, $.post, $.ajax</h2>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Call API</span>
+    </div>
+
+    <p>Trước khi fetch/axios phổ biến, jQuery AJAX là chuẩn mặc định frontend.</p>
+
+    <p class="sub-title">8.1 $.get & $.post đơn giản</p>
+    <div class="example-block">
+      <div class="example-title">Load JSON đơn giản</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>$.get("/api/users", function (data) {
+  console.log("Users:", data);
+});
+
+// POST
+$.post("/api/login", { user: "ngoc", pass: "123" })
+  .done(function (res) {
+    console.log("OK:", res);
+  })
+  .fail(function (err) {
+    console.error("Lỗi:", err);
+  });</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ghi nhớ:</div>
+          <div class="example-output">
+$.get / $.post = shortcut cho $.ajax
+với method GET/POST, hợp cho request đơn giản.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">8.2 $.ajax đầy đủ</p>
+    <div class="example-block">
+      <div class="example-title">Ví dụ $.ajax với options</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>$.ajax({
+  url: "/api/users",
+  method: "GET",
+  dataType: "json",
+  success: function (data) {
+    console.log("Data:", data);
+  },
+  error: function (xhr, status, error) {
+    console.error("Lỗi:", status, error);
+  }
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Khi API trả về 200 + JSON:
+Console: in ra danh sách user.
+Nếu lỗi: log status + error.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Nếu vẫn duy trì project legacy + jQuery, AJAX của jQuery vẫn rất hữu ích.
+      Project mới thì ưu tiên <code>fetch</code> / <code>axios</code>.
+    </div>
+  </section>
+
+  <!-- 9. Attributes & form -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill type">At</div>
+        <h2>9. Attributes, prop, form helper</h2>
+      </div>
+      <span class="tag tag-js">Form Helper</span>
+    </div>
+
+    <p>Một số hàm hỗ trợ thuộc tính & form:</p>
+
+    <div class="chip pink"><span class="chip-dot"></span><code>.attr()</code></div>
+    <div class="chip green"><span class="chip-dot"></span><code>.prop()</code></div>
+    <div class="chip yellow"><span class="chip-dot"></span><code>.val()</code></div>
+
+    <div class="example-block">
+      <div class="example-title">attr vs prop</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;input id="check" type="checkbox" checked&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>console.log($("#check").attr("checked"));
+console.log($("#check").prop("checked"));
+
+$("#check").prop("checked", false);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+.attr("checked")  → "checked" (string)
+.prop("checked")  → true/false (boolean)
+
+Sau khi set prop false:
+checkbox không còn tick.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Utilities -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill func">Ut</div>
+        <h2>10. Utilities – $.each, $.map, $.trim...</h2>
+      </div>
+      <span class="tag tag-js">Helper</span>
+    </div>
+
+    <p>Các hàm util hay gặp:</p>
+    <div class="chip pink"><span class="chip-dot"></span><code>$.each()</code></div>
+    <div class="chip green"><span class="chip-dot"></span><code>$.map()</code></div>
+    <div class="chip yellow"><span class="chip-dot"></span><code>$.trim()</code></div>
+
+    <div class="example-block">
+      <div class="example-title">$.each & $.map</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const arr = [1, 2, 3];
+
+$.each(arr, function (index, value) {
+  console.log(index, value);
+});
+
+const doubled = $.map(arr, function (value) {
+  return value * 2;
+});
+
+console.log(doubled);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+0 1
+1 2
+2 3
+[2, 4, 6]
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Plugin & extend -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill jq">Pl</div>
+        <h2>11. Plugin – $.fn.myPlugin</h2>
+      </div>
+      <span class="tag tag-js">Plugin</span>
+    </div>
+
+    <p>Có thể viết hàm custom dùng như jQuery API.</p>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ plugin đơn giản</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>$.fn.highlight = function () {
+  return this.css({
+    backgroundColor: "#fef3c7",
+    color: "#b45309"
+  });
+};
+
+// sử dụng:
+$("p.important").highlight();</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ghi nhớ:</div>
+          <div class="example-output">
+$.fn = prototype của jQuery object.
+Thêm hàm vào đây = dùng được trên mọi
+selector: $("...").myPlugin()
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Chaining & 'this' trong jQuery -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill jq">Ch</div>
+        <h2>12. Chaining & <code>this</code> trong jQuery</h2>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Dùng suốt</span>
+    </div>
+
+    <p>jQuery hỗ trợ <strong>chaining</strong>: gọi nhiều method liên tiếp trên cùng một selector.</p>
+
+    <div class="example-block">
+      <div class="example-title">Ví dụ chaining cơ bản</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>$("#box")
+  .addClass("active")
+  .css("color", "white")
+  .slideDown(200);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ghi nhớ:</div>
+          <div class="example-output">
+Mỗi hàm jQuery thường return lại chính jQuery object
+→ có thể .addClass().css().slideDown() liên tục.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">12.1 <code>this</code> trong event handler</p>
+    <div class="example-block">
+      <div class="example-title">Dùng <code>this</code> + <code>$(this)</code></div>
+      <div class="example-grid">
+        <div>
+          <pre><code>$(".item").on("click", function () {
+  // this = DOM element
+  // $(this) = jQuery object
+  $(this)
+    .toggleClass("selected")
+    .text("Đã chọn!");
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Bấm vào item:
+Item đó được toggle class "selected"
+và text đổi thành "Đã chọn!"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Nhớ combo: <code>$(this)</code> trong event + chaining = pattern cực thường gặp trong code jQuery thực tế.
+    </div>
+  </section>
+
+  <!-- 13. Thêm / xóa / clone phần tử -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill dom">CR</div>
+        <h2>13. Thêm, xóa, clone phần tử DOM</h2>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Dynamic UI</span>
+    </div>
+
+    <p>Các hàm dùng khi thao tác list, table, menu dynamic:</p>
+    <div class="chip pink"><span class="chip-dot"></span><code>.append()</code> / <code>.prepend()</code></div>
+    <div class="chip green"><span class="chip-dot"></span><code>.before()</code> / <code>.after()</code></div>
+    <div class="chip yellow"><span class="chip-dot"></span><code>.remove()</code> / <code>.empty()</code></div>
+    <div class="chip red"><span class="chip-dot"></span><code>.clone()</code></div>
+
+    <p class="sub-title">13.1 Thêm phần tử mới</p>
+    <div class="example-block">
+      <div class="example-title">append / prepend</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;ul id="list"&gt;
+  &lt;li&gt;Item 1&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>$("#list").append("&lt;li&gt;Item cuối&lt;/li&gt;");
+$("#list").prepend("&lt;li&gt;Item đầu&lt;/li&gt;");</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Item đầu được thêm lên trên,
+Item cuối thêm xuống dưới danh sách.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">13.2 Xóa & dọn nội dung</p>
+    <div class="example-block">
+      <div class="example-title">remove vs empty</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>// Xóa hẳn phần tử khỏi DOM
+$("#list").remove();
+
+// Chỉ xóa con bên trong, giữ thẻ cha
+$("#list").empty();</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ghi nhớ:</div>
+          <div class="example-output">
+.remove() = biến mất luôn cả chính nó
+.empty() = chỉ xoá nội dung bên trong
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">13.3 Clone template (form, row bảng)</p>
+    <div class="example-block">
+      <div class="example-title">clone + append</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const $row = $(".row-template").first().clone();
+$row.removeClass("row-template");
+$("#table-body").append($row);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Tạo một bản copy của row template,
+append xuống cuối bảng.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Tất cả UI kiểu: thêm hàng, thêm input, thêm product row… đều xoay quanh <code>.append()</code> + <code>.clone()</code>.
+    </div>
+  </section>
+
+  <!-- 14. Kích thước, vị trí, scroll -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill type">WH</div>
+        <h2>14. Kích thước & vị trí: width, offset, scroll</h2>
+      </div>
+      <span class="tag tag-js">Layout / UI</span>
+    </div>
+
+    <p>Dùng khi làm tooltip, scroll to top, tính chiều cao/chiều rộng để layout.</p>
+
+    <p class="sub-title">14.1 width / height / inner / outer</p>
+    <div class="example-block">
+      <div class="example-title">Đọc kích thước phần tử</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const $box = $("#box");
+
+console.log($box.width());        // nội dung
+console.log($box.innerWidth());   // + padding
+console.log($box.outerWidth());   // + border
+console.log($box.outerWidth(true)); // + margin</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ghi nhớ:</div>
+          <div class="example-output">
+.outerWidth(true) rất hay dùng
+khi cần tính khoảng chiếm chỗ thật trên layout.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">14.2 offset, position</p>
+    <div class="example-block">
+      <div class="example-title">Vị trí trên trang</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>const pos = $("#box").offset();
+console.log(pos.left, pos.top);
+
+const rel = $("#box").position();
+console.log(rel.left, rel.top);</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Giải thích:</div>
+          <div class="example-output">
+.offset()   → toạ độ so với document (trang)
+.position() → toạ độ so với phần tử cha chứa nó
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">14.3 scrollTop, scrollLeft</p>
+    <div class="example-block">
+      <div class="example-title">Scroll đến một vị trí</div>
+      <div class="example-grid">
+        <div>
+          <pre><code>$(window).scrollTop(0);          // về đầu trang
+$("#container").scrollTop(100);  // scroll trong container</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ứng dụng:</div>
+          <div class="example-output">
+Nút "Back to top", scroll đến phần
+nội dung cụ thể, custom scrollbar...
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. data(), serialize(), serializeArray() -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill store">Dt</div>
+        <h2>15. data() & form serialize</h2>
+      </div>
+      <span class="tag tag-js tag-hot">HOT 🔥 Form & data</span>
+    </div>
+
+    <p class="sub-title">15.1 data-* attributes & .data()</p>
+    <div class="example-block">
+      <div class="example-title">Lưu metadata trên DOM</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;button class="product-btn" data-id="123" data-price="99000"&gt;
+  Mua ngay
+&lt;/button&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>$(".product-btn").on("click", function () {
+  const id = $(this).data("id");
+  const price = $(this).data("price");
+  console.log(id, price);
+});</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Kết quả:</div>
+          <div class="example-output">
+Bấm nút:
+Console: "123 99000"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="sub-title">15.2 serialize & serializeArray cho form</p>
+    <div class="example-block">
+      <div class="example-title">Biến form thành query string / array</div>
+      <div class="example-grid">
+        <div>
+          <div class="example-col-label">HTML:</div>
+          <pre><code>&lt;form id="search-form"&gt;
+  &lt;input name="keyword"&gt;
+  &lt;select name="category"&gt;...&lt;/select&gt;
+&lt;/form&gt;</code></pre>
+        </div>
+        <div>
+          <div class="example-col-label">jQuery:</div>
+          <pre><code>const queryString = $("#search-form").serialize();
+console.log(queryString);
+// ví dụ: "keyword=js&amp;category=book"
+
+const arr = $("#search-form").serializeArray();
+console.log(arr);
+// [
+//   { name: "keyword", value: "js" },
+//   { name: "category", value: "book" }
+// ]</code></pre>
+        </div>
+        <div>
+          <div class="example-output-label">Ứng dụng:</div>
+          <div class="example-output">
+Gửi form qua AJAX (GET/POST) rất tiện:
+dùng serialize() làm query string, hoặc
+serializeArray() để build object.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hot-alert">
+      🔥 Làm việc với form + AJAX mà biết <code>.data()</code>, <code>.serialize()</code>, <code>.serializeArray()</code> là đã rất "đủ xài" trong project jQuery.
+    </div>
+  </section>
+
+  <!-- 16. Ghi chú & best practice -->
+  <section class="section">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="pill error">Tip</div>
+        <h2>16. Ghi chú & best practice với jQuery</h2>
+      </div>
+      <span class="tag tag-js">Best Practice</span>
+    </div>
+
+    <ul>
+      <li>Project mới (React, Vue, SPA hiện đại) thường KHÔNG dùng jQuery nữa, chuyển sang JS thuần + fetch/axios.</li>
+      <li>Tuy nhiên các hệ thống cũ (legacy, admin template, theme cũ) vẫn dùng jQuery rất nhiều → nên nắm vững.</li>
+      <li>Tập trung nhớ: <strong>selector</strong>, <strong>DOM</strong>, <strong>event</strong>, <strong>AJAX</strong>,
+        <strong>effects cơ bản</strong>.</li>
+    </ul>
+
+    <div class="hot-alert">
+      🔥 Skill jQuery mạnh giúp m bảo trì, refactor, hoặc nâng cấp các hệ thống cũ sang stack mới (React/Tailwind/Node)
+      dễ dàng hơn.
+    </div>
+  </section>
+
+  <!-- jQuery CDN để đúng tinh thần file -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- Script search + active tab dùng jQuery + alias bộ lọc -->
+  <script>
+    $(function () {
+      const $input = $('.search-input');
+      const $btn = $('.search-btn');
+      const $results = $('.search-results');
+
+      if (!$input.length || !$btn.length || !$results.length) return;
+
+      // ===== Active tab theo file hiện tại =====
+      const current = location.pathname.split('/').pop() || 'Html.html';
+
+      const tabMap = {
+        'Html.html': 'tab-html',
+        'Css.html': 'tab-css',
+        'Js.html': 'tab-js',
+        'NodeJs.html': 'tab-node',
+        'ReacjsTailwind.html': 'tab-react',
+        'Jquery.html': 'tab-jquery'
+      };
+
+      const activeId = tabMap[current];
+      if (activeId) {
+        $('#' + activeId).addClass('active');
+      }
+
+      // ===== KEYWORD MAP (bộ lọc alias giống file JS) =====
+      const KEYWORD_MAP = {
+        1: ['intro', 'giới thiệu', 'nhúng', 'cdn', 'import', 'include', 'link jquery', 'script jquery'],
+        2: ['ready', 'document ready', 'domcontentloaded', '$(document).ready', '$(function'],
+        3: ['selector', 'chọn phần tử', '$', '#id', '.class', 'attribute selector', ':first', ':last', ':odd', ':even', 'checked', 'selected'],
+        4: ['dom', 'text()', 'html()', 'val()', 'css()', 'addclass', 'removeclass', 'toggleclass', 'thay text', 'thay html', 'update ui'],
+        5: ['event', 'events', 'click', 'keyup', 'change', 'submit', 'preventdefault', 'on()', 'handler', 'delegation'],
+        6: ['effect', 'effects', 'animation', 'hide', 'show', 'fadein', 'fadeout', 'slidedown', 'slideup', 'fadetoggle', 'animate'],
+        7: ['traversing', 'parent', 'children', 'find', 'closest', 'todo list', 'dom tree'],
+        8: ['ajax', '$.get', '$.post', '$.ajax', 'call api', 'api', 'json', 'request', 'response'],
+        9: ['attr', 'attribute', 'prop', 'property', 'checkbox', 'form helper', 'checked'],
+        10: ['utils', 'helper', '$.each', '$.map', '$.trim', 'iterate array', 'loop'],
+        11: ['plugin', '$.fn', 'extend', 'myplugin', 'highlight', 'custom hàm'],
+        12: ['chaining', 'chain', 'this', '$(this)', 'selected item', 'method chain'],
+        13: ['append', 'prepend', 'before', 'after', 'clone', 'remove', 'empty', 'dynamic ui', 'thêm hàng', 'thêm row', 'xóa phần tử'],
+        14: ['width', 'height', 'innerwidth', 'outerwidth', 'offset', 'position', 'scrolltop', 'scrollleft', 'layout', 'tooltip'],
+        15: ['data()', 'data attribute', 'data-*', 'serialize', 'serializearray', 'form data', 'query string'],
+        16: ['best practice', 'ghi chú', 'note', 'tips', 'legacy', 'refactor']
+      };
+
+      // ===== Chuẩn hóa text để search =====
+      function normalize(str) {
+        return (str || '')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '') // bỏ dấu tiếng Việt
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function escapeHtml(str) {
+        return (str || '').replace(/[&<>"']/g, c => {
+          const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+          };
+          return map[c] || c;
+        });
+      }
+
+      function makeSnippet(fullText, term) {
+        const raw = fullText || '';
+        const lower = normalize(raw);
+        const q = normalize(term);
+        const idx = lower.indexOf(q);
+        if (idx === -1) return '';
+
+        const radius = 40;
+        let start = Math.max(0, idx - radius);
+        let end = Math.min(raw.length, idx + q.length + radius);
+
+        let snippet = raw.slice(start, end).replace(/\s+/g, ' ');
+        if (start > 0) snippet = '...' + snippet;
+        if (end < raw.length) snippet = snippet + '...';
+        return snippet;
+      }
+
+      function clearHighlight() {
+        $('.search-hit').removeClass('search-hit');
+      }
+
+      // ===== Build data section (giống JS file cũ: fulltext + keyword alias) =====
+      const sections = [];
+      $('section.section').each(function (index) {
+        const $sec = $(this);
+        let id = $sec.attr('id');
+        if (!id) {
+          id = 'sec-' + (index + 1);
+          $sec.attr('id', id);
+        }
+
+        const title = $.trim($sec.find('h2').first().text()) || ('Mục ' + (index + 1));
+        const rawText = $sec.text() || '';
+
+        const extraKeywords = KEYWORD_MAP[index + 1] || [];
+
+        // thêm text của pill + tag vào keyword
+        $sec.find('.pill, .tag, .chip').each(function () {
+          const t = $.trim($(this).text());
+          if (t) extraKeywords.push(t);
+        });
+
+        const searchText = normalize(rawText + ' ' + extraKeywords.join(' '));
+
+        sections.push({
+          id,
+          title,
+          rawText,
+          searchText,
+          $el: $sec
+        });
+      });
+
+      let currentResults = [];
+      let activeIndex = -1;
+
+      function renderResults(query) {
+        $results.empty();
+        activeIndex = -1;
+        currentResults = [];
+
+        const normQuery = normalize(query);
+        if (!normQuery) return;
+
+        // hỗ trợ nhiều từ khóa: AND all
+        const terms = normQuery.split(' ').filter(Boolean);
+
+        currentResults = sections.filter(sec =>
+          terms.every(t => sec.searchText.includes(t))
+        );
+
+        if (!currentResults.length) {
+          $results.html(
+            '<li class="search-result-empty">Không tìm thấy kết quả cho: <strong>' +
+            escapeHtml(query) +
+            '</strong></li>'
+          );
+          return;
+        }
+
+        const itemsHtml = currentResults.map((sec, idx) => {
+          const snippet = makeSnippet(sec.rawText, query);
+          return `
+<li class="search-result-item" data-index="${idx}">
+  <div class="search-result-icon">⌕</div>
+  <div class="search-result-content">
+    <div class="search-result-title">${escapeHtml(sec.title)}</div>
+    <div class="search-result-snippet">${escapeHtml(snippet)}</div>
+  </div>
+</li>`;
+        }).join('');
+
+        $results.html(itemsHtml);
+      }
+
+      function scrollToResult(index) {
+        const item = currentResults[index];
+        if (!item) return;
+        clearHighlight();
+        item.$el.addClass('search-hit');
+        item.$el[0].scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        $results.empty();
+        currentResults = [];
+        activeIndex = -1;
+      }
+
+      function doSearch() {
+        const q = $input.val().trim();
+        if (!q) {
+          $results.empty();
+          currentResults = [];
+          activeIndex = -1;
+          return;
+        }
+        renderResults(q);
+      }
+
+      function updateActiveItem() {
+        const $items = $results.find('.search-result-item');
+        $items.removeClass('is-active');
+        if (activeIndex >= 0 && activeIndex < $items.length) {
+          $items.eq(activeIndex).addClass('is-active');
+        }
+      }
+
+      // ===== Events =====
+      $btn.on('click', function () {
+        doSearch();
+      });
+
+      $input.on('keydown', function (e) {
+        const key = e.key;
+
+        if (key === 'Enter') {
+          if (currentResults.length && activeIndex >= 0) {
+            e.preventDefault();
+            scrollToResult(activeIndex);
+          } else {
+            e.preventDefault();
+            doSearch();
+          }
+        } else if (key === 'ArrowDown') {
+          if (!currentResults.length) return;
+          e.preventDefault();
+          activeIndex = (activeIndex + 1) % currentResults.length;
+          updateActiveItem();
+        } else if (key === 'ArrowUp') {
+          if (!currentResults.length) return;
+          e.preventDefault();
+          activeIndex = (activeIndex - 1 + currentResults.length) % currentResults.length;
+          updateActiveItem();
+        }
+      });
+
+      $results.on('click', '.search-result-item', function () {
+        const index = Number($(this).data('index'));
+        scrollToResult(index);
+      });
+
+      // click ra ngoài thì đóng dropdown
+      $(document).on('click', function (e) {
+        const $wrapper = $('.search-wrapper');
+        if (!$wrapper[0].contains(e.target)) {
+          $results.empty();
+          currentResults = [];
+          activeIndex = -1;
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
